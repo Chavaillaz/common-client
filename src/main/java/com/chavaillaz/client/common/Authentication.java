@@ -1,6 +1,8 @@
 package com.chavaillaz.client.common;
 
 import static com.chavaillaz.client.common.Authentication.AuthenticationType.ANONYMOUS;
+import static com.chavaillaz.client.common.utility.Utils.encodeBase64;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +12,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Data
 @RequiredArgsConstructor
-public abstract class Authentication {
+public class Authentication {
 
     private final AuthenticationType type;
     private String username;
@@ -41,7 +43,13 @@ public abstract class Authentication {
      *
      * @return The authorization header
      */
-    public abstract String getAuthorizationHeader();
+    public String getAuthorizationHeader() {
+        return switch (getType()) {
+            case ANONYMOUS -> EMPTY;
+            case PASSWORD -> "Basic " + encodeBase64(getUsername() + ":" + getPassword());
+            case TOKEN -> "Bearer " + encodeBase64(getPassword());
+        };
+    }
 
     /**
      * Types of authentication managed by the client.

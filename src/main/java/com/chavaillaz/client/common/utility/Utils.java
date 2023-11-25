@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Map;
 
 import lombok.SneakyThrows;
@@ -97,6 +98,16 @@ public class Utils {
         return ofNullable(System.getenv(propertyKey))
                 .or(() -> ofNullable(System.getProperty(propertyKey)))
                 .orElse(defaultValue);
+    }
+
+    /**
+     * Encodes a {@link String} to base 64 format.
+     *
+     * @param value The value to encode
+     * @return The encoded value
+     */
+    public static String encodeBase64(String value) {
+        return Base64.getEncoder().encodeToString(value.getBytes());
     }
 
 }
