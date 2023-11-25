@@ -1,4 +1,4 @@
-package com.chavaillaz.client.apache;
+package com.chavaillaz.client.common.apache;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.hc.core5.http.ContentType.MULTIPART_FORM_DATA;
@@ -8,8 +8,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.AbstractHttpClient;
-import com.chavaillaz.client.Authentication;
+import com.chavaillaz.client.common.AbstractHttpClient;
+import com.chavaillaz.client.common.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

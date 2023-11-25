@@ -1,6 +1,6 @@
-package com.chavaillaz.client;
+package com.chavaillaz.client.common;
 
-import static com.chavaillaz.client.Authentication.AuthenticationType.ANONYMOUS;
+import static com.chavaillaz.client.common.Authentication.AuthenticationType.ANONYMOUS;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

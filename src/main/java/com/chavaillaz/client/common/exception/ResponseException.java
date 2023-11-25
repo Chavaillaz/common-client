@@ -1,4 +1,4 @@
-package com.chavaillaz.client.exception;
+package com.chavaillaz.client.common.exception;
 
 import lombok.Getter;
 

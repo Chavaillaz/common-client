@@ -1,4 +1,4 @@
-package com.chavaillaz.client.vertx;
+package com.chavaillaz.client.common.vertx;
 
 import java.io.IOException;
 import java.io.InputStream;

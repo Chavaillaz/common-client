@@ -1,4 +1,4 @@
-package com.chavaillaz.client;
+package com.chavaillaz.client.common;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES;
@@ -11,9 +11,9 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Map;
 
-import com.chavaillaz.client.exception.DeserializationException;
-import com.chavaillaz.client.exception.ResponseException;
-import com.chavaillaz.client.exception.SerializationException;
+import com.chavaillaz.client.common.exception.DeserializationException;
+import com.chavaillaz.client.common.exception.ResponseException;
+import com.chavaillaz.client.common.exception.SerializationException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;

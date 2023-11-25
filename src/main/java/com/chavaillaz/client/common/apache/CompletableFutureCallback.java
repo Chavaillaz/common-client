@@ -1,9 +1,9 @@
-package com.chavaillaz.client.apache;
+package com.chavaillaz.client.common.apache;
 
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.AbstractHttpClient;
-import com.chavaillaz.client.exception.ResponseException;
+import com.chavaillaz.client.common.AbstractHttpClient;
+import com.chavaillaz.client.common.exception.ResponseException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;

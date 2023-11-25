@@ -1,4 +1,4 @@
-package com.chavaillaz.client.utility;
+package com.chavaillaz.client.common.utility;
 
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;

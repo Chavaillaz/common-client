@@ -1,4 +1,4 @@
-package com.chavaillaz.client.okhttp;
+package com.chavaillaz.client.common.okhttp;
 
 import static java.net.Proxy.Type.HTTP;
 import static java.nio.file.Files.probeContentType;
@@ -9,7 +9,7 @@ import java.net.Proxy;
 import java.time.Duration;
 import java.util.Optional;
 
-import com.chavaillaz.client.utility.ProxyConfiguration;
+import com.chavaillaz.client.common.utility.ProxyConfiguration;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import okhttp3.MediaType;

@@ -1,10 +1,10 @@
-package com.chavaillaz.client.vertx;
+package com.chavaillaz.client.common.vertx;
 
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.AbstractHttpClient;
-import com.chavaillaz.client.Authentication;
+import com.chavaillaz.client.common.AbstractHttpClient;
+import com.chavaillaz.client.common.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;

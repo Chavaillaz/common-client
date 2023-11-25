@@ -1,4 +1,4 @@
-package com.chavaillaz.client.apache;
+package com.chavaillaz.client.common.apache;
 
 import static org.apache.hc.core5.http.ContentType.DEFAULT_BINARY;
 
@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import com.chavaillaz.client.utility.ProxyConfiguration;
+import com.chavaillaz.client.common.utility.ProxyConfiguration;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.apache.hc.client5.http.config.ConnectionConfig;

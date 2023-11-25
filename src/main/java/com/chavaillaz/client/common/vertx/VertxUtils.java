@@ -1,8 +1,8 @@
-package com.chavaillaz.client.vertx;
+package com.chavaillaz.client.common.vertx;
 
 import java.util.Optional;
 
-import com.chavaillaz.client.utility.ProxyConfiguration;
+import com.chavaillaz.client.common.utility.ProxyConfiguration;
 import io.vertx.core.net.ProxyOptions;
 import io.vertx.ext.web.client.WebClientOptions;
 import lombok.experimental.UtilityClass;

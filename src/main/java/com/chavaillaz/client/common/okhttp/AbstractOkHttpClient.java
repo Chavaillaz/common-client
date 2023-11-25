@@ -1,12 +1,12 @@
-package com.chavaillaz.client.okhttp;
+package com.chavaillaz.client.common.okhttp;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.AbstractHttpClient;
-import com.chavaillaz.client.Authentication;
+import com.chavaillaz.client.common.AbstractHttpClient;
+import com.chavaillaz.client.common.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

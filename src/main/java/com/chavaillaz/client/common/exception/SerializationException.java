@@ -1,4 +1,4 @@
-package com.chavaillaz.client.exception;
+package com.chavaillaz.client.common.exception;
 
 /**
  * Exception in case the body to be sent by the client cannot be serialized.

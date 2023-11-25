@@ -1,4 +1,4 @@
-package com.chavaillaz.client;
+package com.chavaillaz.client.common;
 
 /**
  * Base client having methods to set up proxy and authentication.

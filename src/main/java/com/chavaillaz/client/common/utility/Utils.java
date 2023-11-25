@@ -1,4 +1,4 @@
-package com.chavaillaz.client.utility;
+package com.chavaillaz.client.common.utility;
 
 import static java.net.URLEncoder.encode;
 import static java.nio.charset.StandardCharsets.UTF_8;

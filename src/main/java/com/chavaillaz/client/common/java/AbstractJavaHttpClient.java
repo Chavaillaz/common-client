@@ -1,4 +1,4 @@
-package com.chavaillaz.client.java;
+package com.chavaillaz.client.common.java;
 
 import java.io.InputStream;
 import java.net.http.HttpClient;
@@ -10,8 +10,8 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.AbstractHttpClient;
-import com.chavaillaz.client.Authentication;
+import com.chavaillaz.client.common.AbstractHttpClient;
+import com.chavaillaz.client.common.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 
 /**

@@ -1,4 +1,4 @@
-package com.chavaillaz.client.utility;
+package com.chavaillaz.client.common.utility;
 
 import java.util.Optional;
 import java.util.function.Supplier;

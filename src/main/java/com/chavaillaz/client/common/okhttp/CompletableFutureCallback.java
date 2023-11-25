@@ -1,10 +1,10 @@
-package com.chavaillaz.client.okhttp;
+package com.chavaillaz.client.common.okhttp;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.AbstractHttpClient;
-import com.chavaillaz.client.exception.ResponseException;
+import com.chavaillaz.client.common.AbstractHttpClient;
+import com.chavaillaz.client.common.exception.ResponseException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Call;

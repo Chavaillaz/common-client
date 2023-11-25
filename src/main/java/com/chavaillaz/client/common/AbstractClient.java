@@ -1,6 +1,6 @@
-package com.chavaillaz.client;
+package com.chavaillaz.client.common;
 
-import com.chavaillaz.client.utility.ProxyConfiguration;
+import com.chavaillaz.client.common.utility.ProxyConfiguration;
 
 /**
  * Abstract class implementing common parts of general client.

@@ -1,4 +1,4 @@
-package com.chavaillaz.client.java;
+package com.chavaillaz.client.common.java;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.chavaillaz.client.utility.ProxyConfiguration;
-import com.chavaillaz.client.utility.Utils;
+import com.chavaillaz.client.common.utility.ProxyConfiguration;
+import com.chavaillaz.client.common.utility.Utils;
 import lombok.experimental.UtilityClass;
 
 /**
