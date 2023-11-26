@@ -10,6 +10,8 @@
 
 [OkHttp]: https://square.github.io/okhttp/
 
+[Vertx]: https://vertx.io/docs/vertx-web-client/java/
+
 ![Dependency Check](https://github.com/chavaillaz/common-client/actions/workflows/snyk.yml/badge.svg)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.chavaillaz/common-client/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.chavaillaz/common-client)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -23,6 +25,7 @@ Presently, it supports the following HTTP clients:
 - [Java HTTP client][JavaHttp] (included since Java 11)
 - [Apache HTTP client][ApacheHttp] 5.2
 - [OkHttp client][OkHttp] 4.12
+- [Vert.x client][Vertx] 4.5
 
 ## Installation
 
@@ -38,10 +41,26 @@ The dependency is available in maven central (see badge for version):
 
 ## Usage
 
-- Create the interfaces corresponding to every API you want to interact with (e.g. `UserClient`)
-- Create the authentication method for your service extending the `Authentication` class
-- Create an implementation of your interfaces and extending the available abstract classes for each HTTP client
-- Create a central client extending `AbstractClient` to manage and get the other ones
+- Create the interfaces corresponding to every API you want to interact with (e.g. `UserApi`)
+    - Make them extend [Client.java](src/main/java/com/chavaillaz/client/common/Client.java) to have methods to set
+      proxy and authentication information
+    - Always return completable futures, either `CompletableFuture<YourDomainType>` or `CompletableFuture<Void>`
+- Create the authentication method for your service (in case it does not already exist) by extending the
+  [Authentication.java](src/main/java/com/chavaillaz/client/common/security/Authentication.java) class
+    - Presently, there are token and password authentications available
+- Create an implementation of your interfaces by extending the available abstract classes for each HTTP client
+    - For Apache HTTP:
+      [AbstractApacheHttpClient.java](src/main/java/com/chavaillaz/client/common/apache/AbstractApacheHttpClient.java)
+    - For Java HTTP:
+      [AbstractJavaHttpClient.java](src/main/java/com/chavaillaz/client/common/java/AbstractJavaHttpClient.java)
+    - For OkHttp:
+      [AbstractOkHttpClient.java](src/main/java/com/chavaillaz/client/common/okhttp/AbstractOkHttpClient.java)
+    - For Vert.x:
+      [AbstractVertxHttpClient.java](src/main/java/com/chavaillaz/client/common/vertx/AbstractVertxHttpClient.java)
+- Create a central client to manage and get other ones by extending
+  [AbstractClient.java](src/main/java/com/chavaillaz/client/common/AbstractClient.java)
+    - Use [LazyCachedObject.java](src/main/java/com/chavaillaz/client/common/utility/LazyCachedObject.java) to simplify
+      the cache management of your clients
 
 ## Contributing
 
