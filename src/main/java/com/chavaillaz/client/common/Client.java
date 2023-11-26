@@ -25,23 +25,19 @@ public interface Client<I> {
     I withProxy(String url);
 
     /**
-     * Sets the credentials to use for all requests to the API.
-     * Note that the server has to accept a token without username,
-     * if it's not the case, please use {@link #withTokenAuthentication(String, String)}.
+     * Uses the anonymous access if available for all requests to the API.
      *
-     * @param token The personal access token
      * @return The current client instance
      */
-    I withTokenAuthentication(String token);
+    I withAnonymousAuthentication();
 
     /**
      * Sets the credentials to use for all requests to the API.
      *
-     * @param username The username
-     * @param token    The personal access token
+     * @param token The access token
      * @return The current client instance
      */
-    I withTokenAuthentication(String username, String token);
+    I withTokenAuthentication(String token);
 
     /**
      * Sets the credentials to use for all requests to the API.
@@ -51,12 +47,5 @@ public interface Client<I> {
      * @return The current client instance
      */
     I withUserAuthentication(String username, String password);
-
-    /**
-     * Uses the anonymous access if available for all requests to the API.
-     *
-     * @return The current client instance
-     */
-    I withAnonymousAuthentication();
 
 }

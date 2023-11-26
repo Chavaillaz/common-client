@@ -1,12 +1,13 @@
 package com.chavaillaz.client.common.okhttp;
 
+import static com.chavaillaz.client.common.utility.Utils.getCookieHeader;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.AbstractHttpClient;
-import com.chavaillaz.client.common.Authentication;
+import com.chavaillaz.client.common.security.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +20,9 @@ import okhttp3.ResponseBody;
 
 /**
  * Abstract class implementing common parts for OkHttp.
- *
- * @param <A> The authentication type
  */
 @Slf4j
-public class AbstractOkHttpClient<A extends Authentication> extends AbstractHttpClient<A> implements AutoCloseable {
+public class AbstractOkHttpClient extends AbstractHttpClient implements AutoCloseable {
 
     public static final MediaType MEDIA_TYPE_JSON = MediaType.parse(HEADER_CONTENT_JSON);
 
@@ -36,7 +35,7 @@ public class AbstractOkHttpClient<A extends Authentication> extends AbstractHttp
      * @param baseUrl        The base URL of service API
      * @param authentication The authentication information
      */
-    public AbstractOkHttpClient(OkHttpClient client, String baseUrl, A authentication) {
+    public AbstractOkHttpClient(OkHttpClient client, String baseUrl, Authentication authentication) {
         super(baseUrl, authentication);
         this.client = client;
     }
@@ -49,10 +48,12 @@ public class AbstractOkHttpClient<A extends Authentication> extends AbstractHttp
      * @return The request builder having the URL and authorization header set
      */
     protected Request.Builder requestBuilder(String url, Object... parameters) {
-        return new Request.Builder()
+        var requestBuilder = new Request.Builder()
                 .url(url(url, parameters).toString())
-                .header(HEADER_AUTHORIZATION, getAuthentication().getAuthorizationHeader())
                 .header(HEADER_CONTENT_TYPE, HEADER_CONTENT_JSON);
+        getAuthentication().fillHeaders(requestBuilder::header);
+        getCookieHeader(getAuthentication()).ifPresent(value -> requestBuilder.header(HEADER_COOKIE, value));
+        return requestBuilder;
     }
 
     /**

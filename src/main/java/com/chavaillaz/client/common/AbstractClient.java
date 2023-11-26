@@ -1,18 +1,21 @@
 package com.chavaillaz.client.common;
 
+import com.chavaillaz.client.common.security.AnonymousAuthentication;
+import com.chavaillaz.client.common.security.Authentication;
+import com.chavaillaz.client.common.security.PasswordAuthentication;
+import com.chavaillaz.client.common.security.TokenAuthentication;
 import com.chavaillaz.client.common.utility.ProxyConfiguration;
 
 /**
  * Abstract class implementing common parts of general client.
  *
  * @param <C> The HTTP client type
- * @param <A> The authentication type
  * @param <I> The interface type (to be returned by methods in order to chain calls)
  */
-public abstract class AbstractClient<C, A extends Authentication, I> implements Client<I> {
+public abstract class AbstractClient<C, I> implements Client<I> {
 
     protected final String baseUrl;
-    protected A authentication;
+    protected Authentication authentication;
     protected ProxyConfiguration proxy;
 
     /**
@@ -45,8 +48,20 @@ public abstract class AbstractClient<C, A extends Authentication, I> implements 
     }
 
     @Override
-    public I withTokenAuthentication(String token) {
-        return withTokenAuthentication(null, token);
+    public I withAnonymousAuthentication() {
+        this.authentication = new AnonymousAuthentication();
+        return (I) this;
     }
 
+    @Override
+    public I withTokenAuthentication(String token) {
+        this.authentication = new TokenAuthentication(token);
+        return (I) this;
+    }
+
+    @Override
+    public I withUserAuthentication(String username, String password) {
+        this.authentication = new PasswordAuthentication(username, password);
+        return (I) this;
+    }
 }

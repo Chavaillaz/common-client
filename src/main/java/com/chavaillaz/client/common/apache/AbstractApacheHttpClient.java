@@ -1,6 +1,7 @@
 package com.chavaillaz.client.common.apache;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.apache.hc.client5.http.protocol.HttpClientContext.COOKIE_STORE;
 import static org.apache.hc.core5.http.ContentType.MULTIPART_FORM_DATA;
 
 import java.io.ByteArrayInputStream;
@@ -9,24 +10,27 @@ import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.AbstractHttpClient;
-import com.chavaillaz.client.common.Authentication;
+import com.chavaillaz.client.common.security.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
 import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
+import org.apache.hc.client5.http.cookie.BasicCookieStore;
+import org.apache.hc.client5.http.cookie.CookieStore;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
+import org.apache.hc.client5.http.impl.cookie.BasicClientCookie;
 import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.protocol.BasicHttpContext;
+import org.apache.hc.core5.http.protocol.HttpContext;
 
 /**
  * Abstract class implementing common parts for Apache HTTP.
- *
- * @param <A> The authentication type
  */
 @Slf4j
-public class AbstractApacheHttpClient<A extends Authentication> extends AbstractHttpClient<A> implements AutoCloseable {
+public class AbstractApacheHttpClient extends AbstractHttpClient implements AutoCloseable {
 
     protected final CloseableHttpAsyncClient client;
 
@@ -37,7 +41,7 @@ public class AbstractApacheHttpClient<A extends Authentication> extends Abstract
      * @param baseUrl        The base URL of service API
      * @param authentication The authentication information
      */
-    public AbstractApacheHttpClient(CloseableHttpAsyncClient client, String baseUrl, A authentication) {
+    public AbstractApacheHttpClient(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication) {
         super(baseUrl, authentication);
         this.client = client;
         this.client.start();
@@ -52,9 +56,10 @@ public class AbstractApacheHttpClient<A extends Authentication> extends Abstract
      * @return The request builder having the URL and authorization header set
      */
     protected SimpleRequestBuilder requestBuilder(SimpleRequestBuilder builder, String url, Object... parameters) {
-        return builder.setUri(url(url, parameters))
-                .setHeader(HEADER_AUTHORIZATION, getAuthentication().getAuthorizationHeader())
+        builder.setUri(url(url, parameters))
                 .setHeader(HEADER_CONTENT_TYPE, HEADER_CONTENT_JSON);
+        getAuthentication().fillHeaders(builder::setHeader);
+        return builder;
     }
 
     /**
@@ -80,7 +85,7 @@ public class AbstractApacheHttpClient<A extends Authentication> extends Abstract
     protected <T> CompletableFuture<T> sendAsync(SimpleRequestBuilder requestBuilder, JavaType returnType) {
         SimpleHttpRequest request = requestBuilder.build();
         CompletableFuture<SimpleHttpResponse> completableFuture = new CompletableFuture<>();
-        client.execute(request, new CompletableFutureCallback(this, request, completableFuture));
+        client.execute(request, createContext(), new CompletableFutureCallback(this, request, completableFuture));
         return completableFuture.thenApply(SimpleHttpResponse::getBodyText)
                 .thenApply(body -> deserialize(body, returnType));
     }
@@ -94,7 +99,7 @@ public class AbstractApacheHttpClient<A extends Authentication> extends Abstract
     protected CompletableFuture<InputStream> sendAsync(SimpleRequestBuilder requestBuilder) {
         SimpleHttpRequest request = requestBuilder.build();
         CompletableFuture<SimpleHttpResponse> completableFuture = new CompletableFuture<>();
-        client.execute(request, new CompletableFutureCallback(this, request, completableFuture));
+        client.execute(request, createContext(), new CompletableFutureCallback(this, request, completableFuture));
         return completableFuture.thenApply(SimpleHttpResponse::getBodyBytes)
                 .thenApply(ByteArrayInputStream::new);
     }
@@ -119,6 +124,33 @@ public class AbstractApacheHttpClient<A extends Authentication> extends Abstract
         requestBuilder.setHeader(HEADER_CONTENT_TYPE, MULTIPART_FORM_DATA.getMimeType() + "; boundary=" + boundary)
                 .setBody(outputStream.toByteArray(), MULTIPART_FORM_DATA);
         return sendAsync(requestBuilder, returnType);
+    }
+
+    /**
+     * Creates a local context for the query to be launched.
+     *
+     * @return The corresponding context
+     */
+    protected HttpContext createContext() {
+        final HttpContext localContext = new BasicHttpContext();
+        BasicCookieStore cookieStore = new BasicCookieStore();
+        getAuthentication().fillCookies((key, value) -> addCookie(cookieStore, key, value));
+        localContext.setAttribute(COOKIE_STORE, cookieStore);
+        return localContext;
+    }
+
+    /**
+     * Adds a cookie to the given store.
+     *
+     * @param store The cookie store
+     * @param key   The cookie key
+     * @param value The cookie value
+     */
+    protected void addCookie(CookieStore store, String key, String value) {
+        BasicClientCookie cookie = new BasicClientCookie(key, value);
+        cookie.setDomain(getBaseUrl());
+        cookie.setPath("/");
+        store.addCookie(cookie);
     }
 
     @Override

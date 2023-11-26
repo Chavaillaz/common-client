@@ -3,16 +3,22 @@ package com.chavaillaz.client.common.utility;
 import static java.net.URLEncoder.encode;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.joining;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import com.chavaillaz.client.common.security.Authentication;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * General utilities for all clients.
@@ -108,6 +114,18 @@ public class Utils {
      */
     public static String encodeBase64(String value) {
         return Base64.getEncoder().encodeToString(value.getBytes());
+    }
+
+
+    public static Optional<String> getCookieHeader(Authentication authentication) {
+        List<Pair<String, String>> values = new ArrayList<>();
+        authentication.fillCookies((key, value) -> values.add(Pair.of(key, value)));
+        if (values.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(values.stream()
+                .map(pair -> pair.getKey() + "=" + pair.getValue())
+                .collect(joining(";")));
     }
 
 }

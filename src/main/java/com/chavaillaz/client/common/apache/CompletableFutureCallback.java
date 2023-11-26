@@ -19,7 +19,7 @@ import org.apache.hc.core5.concurrent.FutureCallback;
 @AllArgsConstructor
 public class CompletableFutureCallback implements FutureCallback<SimpleHttpResponse> {
 
-    private final AbstractHttpClient<?> client;
+    private final AbstractHttpClient client;
     private final SimpleHttpRequest request;
     private final CompletableFuture<SimpleHttpResponse> future;
 

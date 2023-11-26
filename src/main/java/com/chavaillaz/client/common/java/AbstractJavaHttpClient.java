@@ -1,5 +1,7 @@
 package com.chavaillaz.client.common.java;
 
+import static com.chavaillaz.client.common.utility.Utils.getCookieHeader;
+
 import java.io.InputStream;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -11,15 +13,13 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.AbstractHttpClient;
-import com.chavaillaz.client.common.Authentication;
+import com.chavaillaz.client.common.security.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 
 /**
  * Abstract class implementing common parts for Java HTTP.
- *
- * @param <A> The authentication type
  */
-public class AbstractJavaHttpClient<A extends Authentication> extends AbstractHttpClient<A> implements AutoCloseable {
+public class AbstractJavaHttpClient extends AbstractHttpClient implements AutoCloseable {
 
     protected final HttpClient client;
 
@@ -30,7 +30,7 @@ public class AbstractJavaHttpClient<A extends Authentication> extends AbstractHt
      * @param baseUrl        The base URL of service API
      * @param authentication The authentication information
      */
-    public AbstractJavaHttpClient(HttpClient client, String baseUrl, A authentication) {
+    public AbstractJavaHttpClient(HttpClient client, String baseUrl, Authentication authentication) {
         super(baseUrl, authentication);
         this.client = client;
     }
@@ -43,10 +43,12 @@ public class AbstractJavaHttpClient<A extends Authentication> extends AbstractHt
      * @return The request builder having the URL and authorization header set
      */
     protected HttpRequest.Builder requestBuilder(String url, Object... parameters) {
-        return HttpRequest.newBuilder()
+        var builder = HttpRequest.newBuilder()
                 .uri(url(url, parameters))
-                .header(HEADER_AUTHORIZATION, getAuthentication().getAuthorizationHeader())
                 .header(HEADER_CONTENT_TYPE, HEADER_CONTENT_JSON);
+        getAuthentication().fillHeaders(builder::setHeader);
+        getCookieHeader(getAuthentication()).ifPresent(value -> builder.setHeader(HEADER_COOKIE, value));
+        return builder;
     }
 
     /**

@@ -21,7 +21,7 @@ import okhttp3.ResponseBody;
 @AllArgsConstructor
 public class CompletableFutureCallback implements Callback {
 
-    private final AbstractHttpClient<?> client;
+    private final AbstractHttpClient client;
     private final CompletableFuture<Response> future;
 
     @Override

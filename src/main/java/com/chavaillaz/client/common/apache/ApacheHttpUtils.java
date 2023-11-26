@@ -11,6 +11,7 @@ import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.cookie.BasicCookieStore;
 import org.apache.hc.client5.http.entity.mime.FileBody;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
@@ -34,6 +35,7 @@ public class ApacheHttpUtils {
     public static CloseableHttpAsyncClient newHttpClient(ProxyConfiguration proxy) {
         return HttpAsyncClientBuilder.create()
                 .useSystemProperties()
+                .setDefaultCookieStore(new BasicCookieStore())
                 .setProxy(Optional.ofNullable(proxy)
                         .map(config -> new HttpHost(config.getScheme(), config.getHost(), config.getPort()))
                         .orElse(null))

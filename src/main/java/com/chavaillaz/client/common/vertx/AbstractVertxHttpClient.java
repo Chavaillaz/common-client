@@ -1,10 +1,12 @@
 package com.chavaillaz.client.common.vertx;
 
+import static com.chavaillaz.client.common.utility.Utils.getCookieHeader;
+
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.AbstractHttpClient;
-import com.chavaillaz.client.common.Authentication;
+import com.chavaillaz.client.common.security.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -18,11 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Abstract class implementing common parts for Vert.x HTTP.
- *
- * @param <A> The authentication type
  */
 @Slf4j
-public class AbstractVertxHttpClient<A extends Authentication> extends AbstractHttpClient<A> implements AutoCloseable {
+public class AbstractVertxHttpClient extends AbstractHttpClient implements AutoCloseable {
 
     protected WebClient client;
 
@@ -34,7 +34,7 @@ public class AbstractVertxHttpClient<A extends Authentication> extends AbstractH
      * @param baseUrl        The base URL of endpoints
      * @param authentication The authentication information
      */
-    protected AbstractVertxHttpClient(Vertx vertx, WebClientOptions options, String baseUrl, A authentication) {
+    protected AbstractVertxHttpClient(Vertx vertx, WebClientOptions options, String baseUrl, Authentication authentication) {
         super(baseUrl, authentication);
         this.client = WebClient.create(vertx, options);
     }
@@ -46,7 +46,7 @@ public class AbstractVertxHttpClient<A extends Authentication> extends AbstractH
      * @param baseUrl        The base URL of endpoints
      * @param authentication The authentication information
      */
-    protected AbstractVertxHttpClient(HttpClient httpClient, String baseUrl, A authentication) {
+    protected AbstractVertxHttpClient(HttpClient httpClient, String baseUrl, Authentication authentication) {
         super(baseUrl, authentication);
         this.client = WebClient.wrap(httpClient);
     }
@@ -60,9 +60,11 @@ public class AbstractVertxHttpClient<A extends Authentication> extends AbstractH
      * @return The request having the URL and authorization header set
      */
     protected HttpRequest<Buffer> requestBuilder(HttpMethod method, String url, Object... parameters) {
-        return client.request(method, url(url, parameters).toString())
-                .putHeader(HEADER_AUTHORIZATION, getAuthentication().getAuthorizationHeader())
+        var request = client.request(method, url(url, parameters).toString())
                 .putHeader(HEADER_CONTENT_TYPE, HEADER_CONTENT_JSON);
+        getAuthentication().fillHeaders(request::putHeader);
+        getCookieHeader(getAuthentication()).ifPresent(value -> request.putHeader(HEADER_COOKIE, value));
+        return request;
     }
 
     /**

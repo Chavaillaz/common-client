@@ -2,6 +2,7 @@ package com.chavaillaz.client.common.java;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.CookieManager;
 import java.net.InetSocketAddress;
 import java.net.ProxySelector;
 import java.net.http.HttpClient;
@@ -35,6 +36,7 @@ public class JavaHttpUtils {
      */
     public static HttpClient newHttpClient(ProxyConfiguration proxy) {
         return HttpClient.newBuilder()
+                .cookieHandler(new CookieManager())
                 .proxy(Optional.ofNullable(proxy)
                         .map(config -> ProxySelector.of(new InetSocketAddress(config.getHost(), config.getPort())))
                         .orElse(ProxySelector.getDefault()))

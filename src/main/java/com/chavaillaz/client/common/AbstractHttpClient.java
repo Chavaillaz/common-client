@@ -14,6 +14,7 @@ import java.util.Map;
 import com.chavaillaz.client.common.exception.DeserializationException;
 import com.chavaillaz.client.common.exception.ResponseException;
 import com.chavaillaz.client.common.exception.SerializationException;
+import com.chavaillaz.client.common.security.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -23,12 +24,10 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Abstract class implementing common parts for all clients.
- *
- * @param <A> The authentication type
  */
 @Slf4j
 @Getter
-public abstract class AbstractHttpClient<A extends Authentication> {
+public abstract class AbstractHttpClient {
 
     public static final String HEADER_COOKIE = "Cookie";
     public static final String HEADER_AUTHORIZATION = "Authorization";
@@ -37,7 +36,7 @@ public abstract class AbstractHttpClient<A extends Authentication> {
     public static final String HEADER_CONTENT_XML = "application/xml";
     public static final String HEADER_CONTENT_FORM = "application/x-www-form-urlencoded";
 
-    protected final A authentication;
+    protected final Authentication authentication;
     protected final String baseUrl;
 
     protected ObjectMapper objectMapper = JsonMapper.builder()
@@ -53,7 +52,7 @@ public abstract class AbstractHttpClient<A extends Authentication> {
      * @param baseUrl        The base URL of endpoints
      * @param authentication The authentication information
      */
-    protected AbstractHttpClient(String baseUrl, A authentication) {
+    protected AbstractHttpClient(String baseUrl, Authentication authentication) {
         this.baseUrl = baseUrl;
         this.authentication = authentication;
     }
