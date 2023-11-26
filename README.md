@@ -42,24 +42,24 @@ The dependency is available in maven central (see badge for version):
 ## Usage
 
 - Create the interfaces corresponding to every API you want to interact with (e.g. `UserApi`)
-    - Make them extend [Client.java](src/main/java/com/chavaillaz/client/common/Client.java) to have methods to set
+    - Make them extend [Client](src/main/java/com/chavaillaz/client/common/Client.java) to have methods to set
       proxy and authentication information
     - Always return completable futures, either `CompletableFuture<YourDomainType>` or `CompletableFuture<Void>`
-- Create the authentication method for your service (in case it does not already exist) by extending the
-  [Authentication.java](src/main/java/com/chavaillaz/client/common/security/Authentication.java) class
+- Create the authentication method for your service (in case it does not already exist) by extending
+  [Authentication](src/main/java/com/chavaillaz/client/common/security/Authentication.java)
     - Presently, there are token and password authentications available
 - Create an implementation of your interfaces by extending the available abstract classes for each HTTP client
     - For Apache HTTP:
-      [AbstractApacheHttpClient.java](src/main/java/com/chavaillaz/client/common/apache/AbstractApacheHttpClient.java)
+      [AbstractApacheHttpClient](src/main/java/com/chavaillaz/client/common/apache/AbstractApacheHttpClient.java)
     - For Java HTTP:
-      [AbstractJavaHttpClient.java](src/main/java/com/chavaillaz/client/common/java/AbstractJavaHttpClient.java)
+      [AbstractJavaHttpClient](src/main/java/com/chavaillaz/client/common/java/AbstractJavaHttpClient.java)
     - For OkHttp:
-      [AbstractOkHttpClient.java](src/main/java/com/chavaillaz/client/common/okhttp/AbstractOkHttpClient.java)
+      [AbstractOkHttpClient](src/main/java/com/chavaillaz/client/common/okhttp/AbstractOkHttpClient.java)
     - For Vert.x:
-      [AbstractVertxHttpClient.java](src/main/java/com/chavaillaz/client/common/vertx/AbstractVertxHttpClient.java)
+      [AbstractVertxHttpClient](src/main/java/com/chavaillaz/client/common/vertx/AbstractVertxHttpClient.java)
 - Create a central client to manage and get other ones by extending
-  [AbstractClient.java](src/main/java/com/chavaillaz/client/common/AbstractClient.java)
-    - Use [LazyCachedObject.java](src/main/java/com/chavaillaz/client/common/utility/LazyCachedObject.java) to simplify
+  [AbstractClient](src/main/java/com/chavaillaz/client/common/AbstractClient.java)
+    - Use [LazyCachedObject](src/main/java/com/chavaillaz/client/common/utility/LazyCachedObject.java) to simplify
       the cache management of your clients
 
 ## Contributing
