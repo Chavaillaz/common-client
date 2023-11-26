@@ -6,6 +6,9 @@ import java.io.InputStream;
 import io.vertx.core.buffer.Buffer;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Input stream reading the content of a Vert.x {@link Buffer}.
+ */
 @RequiredArgsConstructor
 public class VertxInputStream extends InputStream {
 

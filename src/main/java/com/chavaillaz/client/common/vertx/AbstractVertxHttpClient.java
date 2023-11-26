@@ -8,14 +8,12 @@ import java.util.concurrent.CompletableFuture;
 import com.chavaillaz.client.common.AbstractHttpClient;
 import com.chavaillaz.client.common.security.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
-import io.vertx.core.Vertx;
+import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
-import io.vertx.ext.web.client.WebClientOptions;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -29,38 +27,25 @@ public class AbstractVertxHttpClient extends AbstractHttpClient implements AutoC
     /**
      * Creates a new abstract client based on Vert.x HTTP client.
      *
-     * @param vertx          The Vert.x instance to create the web client
-     * @param options        The web client options
+     * @param client         The web client to use
      * @param baseUrl        The base URL of endpoints
      * @param authentication The authentication information
      */
-    protected AbstractVertxHttpClient(Vertx vertx, WebClientOptions options, String baseUrl, Authentication authentication) {
+    protected AbstractVertxHttpClient(WebClient client, String baseUrl, Authentication authentication) {
         super(baseUrl, authentication);
-        this.client = WebClient.create(vertx, options);
-    }
-
-    /**
-     * Creates a new abstract client based on Vert.x HTTP client.
-     *
-     * @param httpClient     The HTTP client to wrap in the Vert.x web client
-     * @param baseUrl        The base URL of endpoints
-     * @param authentication The authentication information
-     */
-    protected AbstractVertxHttpClient(HttpClient httpClient, String baseUrl, Authentication authentication) {
-        super(baseUrl, authentication);
-        this.client = WebClient.wrap(httpClient);
+        this.client = client;
     }
 
     /**
      * Creates a request based on the given URL and replaces the parameters in it by the given ones.
      *
-     * @param method     The HTTP method for the HTTP request to build
+     * @param method     The HTTP method for the request to build
      * @param url        The URL with possible parameters in it (using braces)
      * @param parameters The parameters value to replace in the URL (in the right order)
-     * @return The request having the URL and authorization header set
+     * @return The request having the URL and authentication set
      */
     protected HttpRequest<Buffer> requestBuilder(HttpMethod method, String url, Object... parameters) {
-        var request = client.request(method, url(url, parameters).toString())
+        var request = client.requestAbs(method, url(url, parameters).toString())
                 .putHeader(HEADER_CONTENT_TYPE, HEADER_CONTENT_JSON);
         getAuthentication().fillHeaders(request::putHeader);
         getCookieHeader(getAuthentication()).ifPresent(value -> request.putHeader(HEADER_COOKIE, value));
@@ -68,49 +53,63 @@ public class AbstractVertxHttpClient extends AbstractHttpClient implements AutoC
     }
 
     /**
-     * Sends a request and returns a domain object.
+     * Creates a body buffer containing the given object serialized as JSON.
      *
-     * @param request    The request
-     * @param returnType The domain object type class
-     * @param <T>        The domain object type
-     * @return A {@link CompletableFuture} with the deserialized domain object
+     * @param object The object to serialize
+     * @return The corresponding buffer for the request
      */
-    protected <T> CompletableFuture<T> sendAsync(HttpRequest<Buffer> request, Class<T> returnType) {
-        return sendAsync(request, objectMapper.constructType(returnType));
+    protected Buffer body(Object object) {
+        return Buffer.buffer(serialize(object));
     }
 
     /**
-     * Sends a request and returns a domain object.
+     * Handles the request sent and returns a domain object.
      *
-     * @param request    The request
+     * @param future     The future response
      * @param returnType The domain object type class
      * @param <T>        The domain object type
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
-    protected <T> CompletableFuture<T> sendAsync(HttpRequest<Buffer> request, JavaType returnType) {
+    protected <T> CompletableFuture<T> handleAsync(Future<HttpResponse<Buffer>> future, Class<T> returnType) {
+        return handleAsync(future, objectMapper.constructType(returnType));
+    }
+
+    /**
+     * Handles the request sent and returns a domain object.
+     *
+     * @param future     The future response
+     * @param returnType The domain object type class
+     * @param <T>        The domain object type
+     * @return A {@link CompletableFuture} with the deserialized domain object
+     */
+    protected <T> CompletableFuture<T> handleAsync(Future<HttpResponse<Buffer>> future, JavaType returnType) {
         CompletableFuture<HttpResponse<Buffer>> completableFuture = new CompletableFuture<>();
-        request.send()
-                .onSuccess(response -> handleResponse(response, completableFuture))
+        future.onSuccess(response -> handleResponse(response, completableFuture))
                 .onFailure(completableFuture::completeExceptionally);
         return completableFuture.thenApply(HttpResponse::bodyAsString)
                 .thenApply(body -> deserialize(body, returnType));
     }
 
     /**
-     * Sends a request and returns an input stream.
+     * Handles the request sent and returns an input stream.
      *
-     * @param request The request
+     * @param future The future response
      * @return A {@link CompletableFuture} with the input stream
      */
-    protected CompletableFuture<InputStream> sendAsync(HttpRequest<Buffer> request) {
+    protected CompletableFuture<InputStream> handleAsync(Future<HttpResponse<Buffer>> future) {
         CompletableFuture<HttpResponse<Buffer>> completableFuture = new CompletableFuture<>();
-        request.send()
-                .onSuccess(response -> handleResponse(response, completableFuture))
+        future.onSuccess(response -> handleResponse(response, completableFuture))
                 .onFailure(completableFuture::completeExceptionally);
         return completableFuture.thenApply(HttpResponse::body)
                 .thenApply(VertxInputStream::new);
     }
 
+    /**
+     * Handles the response by transmitting its state to the given {@link CompletableFuture}.
+     *
+     * @param response          The HTTP response
+     * @param completableFuture The completable future to update
+     */
     protected void handleResponse(HttpResponse<Buffer> response, CompletableFuture<HttpResponse<Buffer>> completableFuture) {
         if (response.statusCode() >= 400) {
             completableFuture.completeExceptionally(responseException(response.statusCode(), response.bodyAsString()));
