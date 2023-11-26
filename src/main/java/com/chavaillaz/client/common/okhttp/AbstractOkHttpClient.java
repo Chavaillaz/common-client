@@ -45,7 +45,7 @@ public class AbstractOkHttpClient extends AbstractHttpClient implements AutoClos
      *
      * @param url        The URL with possible parameters in it (using braces)
      * @param parameters The parameters value to replace in the URL (in the right order)
-     * @return The request builder having the URL and authorization header set
+     * @return The request builder having the URL and authentication set
      */
     protected Request.Builder requestBuilder(String url, Object... parameters) {
         var requestBuilder = new Request.Builder()
@@ -114,6 +114,14 @@ public class AbstractOkHttpClient extends AbstractHttpClient implements AutoClos
                 .thenApply(ResponseBody::byteStream);
     }
 
+    /**
+     * Handles the response by converting it to the given type.
+     *
+     * @param response The HTTP response
+     * @param type     The type in which convert the response body
+     * @param <T>      The desired domain object type
+     * @return The instance of the given type
+     */
     @SneakyThrows
     protected <T> T handleResponse(Response response, JavaType type) {
         try (ResponseBody body = response.body()) {

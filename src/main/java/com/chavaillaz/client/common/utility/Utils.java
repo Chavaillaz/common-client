@@ -82,6 +82,33 @@ public class Utils {
     }
 
     /**
+     * Encodes a {@link String} to base 64 format.
+     *
+     * @param value The value to encode
+     * @return The encoded value
+     */
+    public static String encodeBase64(String value) {
+        return Base64.getEncoder().encodeToString(value.getBytes());
+    }
+
+    /**
+     * Gets the value of the {@code Cookie} header for the given authentication information.
+     *
+     * @param authentication The authentication to use
+     * @return The optional header value
+     */
+    public static Optional<String> getCookieHeader(Authentication authentication) {
+        List<Pair<String, String>> values = new ArrayList<>();
+        authentication.fillCookies((key, value) -> values.add(Pair.of(key, value)));
+        if (values.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(values.stream()
+                .map(pair -> pair.getKey() + "=" + pair.getValue())
+                .collect(joining("; ")));
+    }
+
+    /**
      * Gets a property with priority from environment variable,
      * then from system properties or {@code null}.
      *
@@ -104,28 +131,6 @@ public class Utils {
         return ofNullable(System.getenv(propertyKey))
                 .or(() -> ofNullable(System.getProperty(propertyKey)))
                 .orElse(defaultValue);
-    }
-
-    /**
-     * Encodes a {@link String} to base 64 format.
-     *
-     * @param value The value to encode
-     * @return The encoded value
-     */
-    public static String encodeBase64(String value) {
-        return Base64.getEncoder().encodeToString(value.getBytes());
-    }
-
-
-    public static Optional<String> getCookieHeader(Authentication authentication) {
-        List<Pair<String, String>> values = new ArrayList<>();
-        authentication.fillCookies((key, value) -> values.add(Pair.of(key, value)));
-        if (values.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(values.stream()
-                .map(pair -> pair.getKey() + "=" + pair.getValue())
-                .collect(joining(";")));
     }
 
 }

@@ -40,7 +40,7 @@ public class AbstractJavaHttpClient extends AbstractHttpClient implements AutoCl
      *
      * @param url        The URL with possible parameters in it (using braces)
      * @param parameters The parameters value to replace in the URL (in the right order)
-     * @return The request builder having the URL and authorization header set
+     * @return The request builder having the URL and authentication set
      */
     protected HttpRequest.Builder requestBuilder(String url, Object... parameters) {
         var builder = HttpRequest.newBuilder()

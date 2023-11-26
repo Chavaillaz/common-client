@@ -53,7 +53,7 @@ public class AbstractApacheHttpClient extends AbstractHttpClient implements Auto
      * @param builder    The request builder to use
      * @param url        The URL with possible parameters in it (using braces)
      * @param parameters The parameters value to replace in the URL (in the right order)
-     * @return The request builder having the URL and authorization header set
+     * @return The request builder having the URL and authentication set
      */
     protected SimpleRequestBuilder requestBuilder(SimpleRequestBuilder builder, String url, Object... parameters) {
         builder.setUri(url(url, parameters))
@@ -132,7 +132,7 @@ public class AbstractApacheHttpClient extends AbstractHttpClient implements Auto
      * @return The corresponding context
      */
     protected HttpContext createContext() {
-        final HttpContext localContext = new BasicHttpContext();
+        HttpContext localContext = new BasicHttpContext();
         BasicCookieStore cookieStore = new BasicCookieStore();
         getAuthentication().fillCookies((key, value) -> addCookie(cookieStore, key, value));
         localContext.setAttribute(COOKIE_STORE, cookieStore);
