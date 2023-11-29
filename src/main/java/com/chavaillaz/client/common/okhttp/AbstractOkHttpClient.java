@@ -10,7 +10,6 @@ import com.chavaillaz.client.common.AbstractHttpClient;
 import com.chavaillaz.client.common.security.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -21,7 +20,6 @@ import okhttp3.ResponseBody;
 /**
  * Abstract class implementing common parts for OkHttp.
  */
-@Slf4j
 public class AbstractOkHttpClient extends AbstractHttpClient implements AutoCloseable {
 
     public static final MediaType MEDIA_TYPE_JSON = MediaType.parse(HEADER_CONTENT_JSON);
@@ -96,9 +94,8 @@ public class AbstractOkHttpClient extends AbstractHttpClient implements AutoClos
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
     protected <T> CompletableFuture<T> sendAsync(Request.Builder requestBuilder, JavaType returnType) {
-        CompletableFuture<Response> completableFuture = new CompletableFuture<>();
-        client.newCall(requestBuilder.build()).enqueue(new CompletableFutureCallback(this, completableFuture));
-        return completableFuture.thenApply(response -> handleResponse(response, returnType));
+        return sendAsyncBase(requestBuilder)
+                .thenApply(response -> handleResponse(response, returnType));
     }
 
     /**
@@ -108,10 +105,21 @@ public class AbstractOkHttpClient extends AbstractHttpClient implements AutoClos
      * @return A {@link CompletableFuture} with the input stream
      */
     protected CompletableFuture<InputStream> sendAsync(Request.Builder requestBuilder) {
+        return sendAsyncBase(requestBuilder)
+                .thenApply(Response::body)
+                .thenApply(ResponseBody::byteStream);
+    }
+
+    /**
+     * Sends a request and returns the corresponding response.
+     *
+     * @param requestBuilder The request builder
+     * @return A {@link CompletableFuture} with the response
+     */
+    protected CompletableFuture<Response> sendAsyncBase(Request.Builder requestBuilder) {
         CompletableFuture<Response> completableFuture = new CompletableFuture<>();
         client.newCall(requestBuilder.build()).enqueue(new CompletableFutureCallback(this, completableFuture));
-        return completableFuture.thenApply(Response::body)
-                .thenApply(ResponseBody::byteStream);
+        return completableFuture;
     }
 
     /**

@@ -13,7 +13,6 @@ import com.chavaillaz.client.common.AbstractHttpClient;
 import com.chavaillaz.client.common.security.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
 import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
@@ -29,7 +28,6 @@ import org.apache.hc.core5.http.protocol.HttpContext;
 /**
  * Abstract class implementing common parts for Apache HTTP.
  */
-@Slf4j
 public class AbstractApacheHttpClient extends AbstractHttpClient implements AutoCloseable {
 
     protected final CloseableHttpAsyncClient client;
@@ -83,10 +81,8 @@ public class AbstractApacheHttpClient extends AbstractHttpClient implements Auto
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
     protected <T> CompletableFuture<T> sendAsync(SimpleRequestBuilder requestBuilder, JavaType returnType) {
-        SimpleHttpRequest request = requestBuilder.build();
-        CompletableFuture<SimpleHttpResponse> completableFuture = new CompletableFuture<>();
-        client.execute(request, createContext(), new CompletableFutureCallback(this, request, completableFuture));
-        return completableFuture.thenApply(SimpleHttpResponse::getBodyText)
+        return sendAsyncBase(requestBuilder)
+                .thenApply(SimpleHttpResponse::getBodyText)
                 .thenApply(body -> deserialize(body, returnType));
     }
 
@@ -97,11 +93,22 @@ public class AbstractApacheHttpClient extends AbstractHttpClient implements Auto
      * @return A {@link CompletableFuture} with the input stream
      */
     protected CompletableFuture<InputStream> sendAsync(SimpleRequestBuilder requestBuilder) {
+        return sendAsyncBase(requestBuilder)
+                .thenApply(SimpleHttpResponse::getBodyBytes)
+                .thenApply(ByteArrayInputStream::new);
+    }
+
+    /**
+     * Sends a request and returns the corresponding response.
+     *
+     * @param requestBuilder The request builder
+     * @return A {@link CompletableFuture} with the response
+     */
+    protected CompletableFuture<SimpleHttpResponse> sendAsyncBase(SimpleRequestBuilder requestBuilder) {
         SimpleHttpRequest request = requestBuilder.build();
         CompletableFuture<SimpleHttpResponse> completableFuture = new CompletableFuture<>();
         client.execute(request, createContext(), new CompletableFutureCallback(this, request, completableFuture));
-        return completableFuture.thenApply(SimpleHttpResponse::getBodyBytes)
-                .thenApply(ByteArrayInputStream::new);
+        return completableFuture;
     }
 
     /**

@@ -14,12 +14,10 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Abstract class implementing common parts for Vert.x HTTP.
  */
-@Slf4j
 public class AbstractVertxHttpClient extends AbstractHttpClient implements AutoCloseable {
 
     protected WebClient client;
@@ -83,10 +81,8 @@ public class AbstractVertxHttpClient extends AbstractHttpClient implements AutoC
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
     protected <T> CompletableFuture<T> handleAsync(Future<HttpResponse<Buffer>> future, JavaType returnType) {
-        CompletableFuture<HttpResponse<Buffer>> completableFuture = new CompletableFuture<>();
-        future.onSuccess(response -> handleResponse(response, completableFuture))
-                .onFailure(completableFuture::completeExceptionally);
-        return completableFuture.thenApply(HttpResponse::bodyAsString)
+        return handleAsyncBase(future)
+                .thenApply(HttpResponse::bodyAsString)
                 .thenApply(body -> deserialize(body, returnType));
     }
 
@@ -97,11 +93,22 @@ public class AbstractVertxHttpClient extends AbstractHttpClient implements AutoC
      * @return A {@link CompletableFuture} with the input stream
      */
     protected CompletableFuture<InputStream> handleAsync(Future<HttpResponse<Buffer>> future) {
+        return handleAsyncBase(future)
+                .thenApply(HttpResponse::body)
+                .thenApply(VertxInputStream::new);
+    }
+
+    /**
+     * Handles the request sent and returns the corresponding response buffer.
+     *
+     * @param future The future response
+     * @return A {@link CompletableFuture} with the response buffer
+     */
+    protected CompletableFuture<HttpResponse<Buffer>> handleAsyncBase(Future<HttpResponse<Buffer>> future) {
         CompletableFuture<HttpResponse<Buffer>> completableFuture = new CompletableFuture<>();
         future.onSuccess(response -> handleResponse(response, completableFuture))
                 .onFailure(completableFuture::completeExceptionally);
-        return completableFuture.thenApply(HttpResponse::body)
-                .thenApply(VertxInputStream::new);
+        return completableFuture;
     }
 
     /**
