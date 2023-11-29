@@ -9,13 +9,6 @@ import java.util.function.BiConsumer;
 public abstract class Authentication {
 
     /**
-     * Fills the credentials in the query parameters using the given method.
-     *
-     * @param addQueryParameter The filling method
-     */
-    public abstract void fillQueryParameters(BiConsumer<String, String> addQueryParameter);
-
-    /**
      * Fills the credentials in the headers using the given method.
      *
      * @param addHeader The filling method

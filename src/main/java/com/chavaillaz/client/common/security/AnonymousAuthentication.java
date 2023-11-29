@@ -8,11 +8,6 @@ import java.util.function.BiConsumer;
 public class AnonymousAuthentication extends Authentication {
 
     @Override
-    public void fillQueryParameters(BiConsumer<String, String> addQueryParameter) {
-        // Nothing to do
-    }
-
-    @Override
     public void fillHeaders(BiConsumer<String, String> addHeader) {
         // Nothing to do
     }
