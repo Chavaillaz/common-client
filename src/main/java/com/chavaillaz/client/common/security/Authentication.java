@@ -4,7 +4,7 @@ import java.util.function.BiConsumer;
 
 /**
  * Hold the authentication details to access the desired services.
- * Its implementation needs to fill the query parameters, headers and/or cookies.
+ * Its implementation needs to fill headers and/or cookies.
  */
 public abstract class Authentication {
 

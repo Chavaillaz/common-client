@@ -3,6 +3,9 @@ package com.chavaillaz.client.common.apache;
 import static org.apache.hc.core5.http.ContentType.DEFAULT_BINARY;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -14,10 +17,11 @@ import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.cookie.BasicCookieStore;
 import org.apache.hc.client5.http.entity.mime.FileBody;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
-import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClientBuilder;
 import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManagerBuilder;
 import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.apache.hc.core5.util.Timeout;
 
 /**
@@ -27,12 +31,12 @@ import org.apache.hc.core5.util.Timeout;
 public class ApacheHttpUtils {
 
     /**
-     * Creates a new asynchronous Apache HTTP client with default configuration (30 seconds timeout).
+     * Creates a new asynchronous Apache HTTP client builder with default configuration (30 seconds timeout).
      *
      * @param proxy The proxy configuration
      * @return The corresponding client
      */
-    public static CloseableHttpAsyncClient newHttpClient(ProxyConfiguration proxy) {
+    public static HttpAsyncClientBuilder defaultHttpClientBuilder(ProxyConfiguration proxy) {
         return HttpAsyncClientBuilder.create()
                 .useSystemProperties()
                 .setDefaultCookieStore(new BasicCookieStore())
@@ -47,12 +51,11 @@ public class ApacheHttpUtils {
                         .build())
                 .setDefaultRequestConfig(RequestConfig.custom()
                         .setResponseTimeout(null)
-                        .build())
-                .build();
+                        .build());
     }
 
     /**
-     * Generates a new multipart entity builder with the given files.
+     * Creates a new multipart entity builder with the given files.
      *
      * @param files The list of files to include
      * @return The multipart entity builder
@@ -67,5 +70,18 @@ public class ApacheHttpUtils {
                 .forEach(body -> builder.addPart("file", body));
         return builder;
     }
+
+    /**
+     * Creates the HTTP parameters for form data using a map of key value representing the data to send.
+     *
+     * @param data The data to format and send as form data
+     * @return The corresponding parameters
+     */
+    public NameValuePair[] formData(Map<Object, Object> data) {
+        List<NameValuePair> parameters = new ArrayList<>();
+        data.forEach((key, value) -> parameters.add(new BasicNameValuePair(key.toString(), value.toString())));
+        return parameters.toArray(new NameValuePair[0]);
+    }
+
 
 }

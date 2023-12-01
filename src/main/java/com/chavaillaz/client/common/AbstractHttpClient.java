@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class AbstractHttpClient {
 
     public static final String HEADER_COOKIE = "Cookie";
+    public static final String HEADER_SET_COOKIE = "Set-Cookie";
     public static final String HEADER_AUTHORIZATION = "Authorization";
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
     public static final String HEADER_CONTENT_JSON = "application/json";

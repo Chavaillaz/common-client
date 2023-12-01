@@ -3,7 +3,7 @@ package com.chavaillaz.client.common.security;
 import java.util.function.BiConsumer;
 
 /**
- * Anonymous authentication which is not adding anything to query parameters, headers or cookies.
+ * Anonymous authentication which is not adding anything to headers and/or cookies.
  */
 public class AnonymousAuthentication extends Authentication {
 

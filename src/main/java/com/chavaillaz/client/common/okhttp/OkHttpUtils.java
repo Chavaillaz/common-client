@@ -2,11 +2,13 @@ package com.chavaillaz.client.common.okhttp;
 
 import static java.net.Proxy.Type.HTTP;
 import static java.nio.file.Files.probeContentType;
+import static okhttp3.MultipartBody.FORM;
 
 import java.io.File;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.time.Duration;
+import java.util.Map;
 import java.util.Optional;
 
 import com.chavaillaz.client.common.utility.ProxyConfiguration;
@@ -16,6 +18,8 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * Utilities for OkHttp Client.
@@ -24,24 +28,23 @@ import okhttp3.RequestBody;
 public class OkHttpUtils {
 
     /**
-     * Creates a new asynchronous OkHttp HTTP client with default configuration (30 seconds timeout).
+     * Creates a new asynchronous OkHttp HTTP client builder with default configuration (30 seconds timeout).
      *
      * @param proxy The proxy configuration
      * @return The corresponding client
      */
-    public static OkHttpClient newHttpClient(ProxyConfiguration proxy) {
+    public static OkHttpClient.Builder defaultHttpClientBuilder(ProxyConfiguration proxy) {
         return new OkHttpClient.Builder()
                 .proxy(Optional.ofNullable(proxy)
                         .map(config -> new Proxy(HTTP, new InetSocketAddress(config.getHost(), config.getPort())))
                         .orElse(null))
                 .connectTimeout(Duration.ofSeconds(30))
                 .readTimeout(Duration.ofSeconds(30))
-                .callTimeout(Duration.ofSeconds(0))
-                .build();
+                .callTimeout(Duration.ofSeconds(0));
     }
 
     /**
-     * Generates a new multipart body with the given files.
+     * Creates a new multipart body with the given files.
      *
      * @param files The list of files to include
      * @return The multipart body
@@ -57,6 +60,32 @@ public class OkHttpUtils {
         }
 
         return multipartBuilder.build();
+    }
+
+    /**
+     * Creates the request body for form data using a map of key value representing the data to send.
+     *
+     * @param data The data to format and send as form data
+     * @return The corresponding request body
+     */
+    public RequestBody formData(Map<Object, Object> data) {
+        MultipartBody.Builder form = new MultipartBody.Builder().setType(FORM);
+        data.forEach((key, value) -> form.addFormDataPart(key.toString(), value.toString()));
+        return form.build();
+    }
+
+    /**
+     * Gets the body of the given response.
+     * Note that the body can only be read once.
+     *
+     * @param response The HTTP response
+     * @return The body content or {@code null} if not present
+     */
+    @SneakyThrows
+    public String getBody(Response response) {
+        try (ResponseBody body = response.body()) {
+            return body != null ? body.string() : null;
+        }
     }
 
 }

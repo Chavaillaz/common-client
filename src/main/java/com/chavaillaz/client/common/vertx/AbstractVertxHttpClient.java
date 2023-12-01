@@ -20,7 +20,7 @@ import io.vertx.ext.web.client.WebClient;
  */
 public class AbstractVertxHttpClient extends AbstractHttpClient implements AutoCloseable {
 
-    protected WebClient client;
+    protected final WebClient client;
 
     /**
      * Creates a new abstract client based on Vert.x HTTP client.

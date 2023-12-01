@@ -21,8 +21,8 @@ import org.apache.hc.client5.http.cookie.CookieStore;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.cookie.BasicClientCookie;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.protocol.BasicHttpContext;
 import org.apache.hc.core5.http.protocol.HttpContext;
 
 /**
@@ -139,7 +139,7 @@ public class AbstractApacheHttpClient extends AbstractHttpClient implements Auto
      * @return The corresponding context
      */
     protected HttpContext createContext() {
-        HttpContext localContext = new BasicHttpContext();
+        HttpContext localContext = HttpClientContext.create();
         BasicCookieStore cookieStore = new BasicCookieStore();
         getAuthentication().fillCookies((key, value) -> addCookie(cookieStore, key, value));
         localContext.setAttribute(COOKIE_STORE, cookieStore);

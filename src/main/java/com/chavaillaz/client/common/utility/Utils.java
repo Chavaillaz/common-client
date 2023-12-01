@@ -64,7 +64,7 @@ public class Utils {
      * @param data The data to format
      * @return the corresponding {@link String}
      */
-    public static String queryFromKeyValue(Map<Object, Object> data) {
+    public static String encodeQuery(Map<Object, Object> data) {
         StringBuilder result = new StringBuilder();
         data.forEach((key, value) -> {
             if (!result.isEmpty()) {

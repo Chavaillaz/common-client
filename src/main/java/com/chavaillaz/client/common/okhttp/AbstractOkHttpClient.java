@@ -22,7 +22,9 @@ import okhttp3.ResponseBody;
  */
 public class AbstractOkHttpClient extends AbstractHttpClient implements AutoCloseable {
 
+    public static final RequestBody EMPTY_BODY = RequestBody.create(EMPTY, null);
     public static final MediaType MEDIA_TYPE_JSON = MediaType.parse(HEADER_CONTENT_JSON);
+    public static final MediaType MEDIA_TYPE_XML = MediaType.parse(HEADER_CONTENT_XML);
 
     protected final OkHttpClient client;
 
@@ -70,7 +72,7 @@ public class AbstractOkHttpClient extends AbstractHttpClient implements AutoClos
      * @return The corresponding request body
      */
     protected RequestBody body() {
-        return RequestBody.create(EMPTY, null);
+        return EMPTY_BODY;
     }
 
     /**

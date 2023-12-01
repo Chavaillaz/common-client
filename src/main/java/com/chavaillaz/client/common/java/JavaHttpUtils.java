@@ -29,19 +29,18 @@ import lombok.experimental.UtilityClass;
 public class JavaHttpUtils {
 
     /**
-     * Creates a new asynchronous Java HTTP client with default configuration (30 seconds timeout).
+     * Creates a new asynchronous Java HTTP client builder with default configuration (30 seconds timeout).
      *
      * @param proxy The proxy configuration
      * @return The corresponding client
      */
-    public static HttpClient newHttpClient(ProxyConfiguration proxy) {
+    public static HttpClient.Builder defaultHttpClientBuilder(ProxyConfiguration proxy) {
         return HttpClient.newBuilder()
                 .cookieHandler(new CookieManager())
                 .proxy(Optional.ofNullable(proxy)
                         .map(config -> ProxySelector.of(new InetSocketAddress(config.getHost(), config.getPort())))
                         .orElse(ProxySelector.getDefault()))
-                .connectTimeout(Duration.ofSeconds(30))
-                .build();
+                .connectTimeout(Duration.ofSeconds(30));
     }
 
     /**
@@ -50,8 +49,8 @@ public class JavaHttpUtils {
      * @param data The data to format and send as form data
      * @return The corresponding body publisher
      */
-    public static BodyPublisher ofFormData(Map<Object, Object> data) {
-        return BodyPublishers.ofString(Utils.queryFromKeyValue(data));
+    public static BodyPublisher formData(Map<Object, Object> data) {
+        return BodyPublishers.ofString(Utils.encodeQuery(data));
     }
 
     /**
@@ -63,7 +62,7 @@ public class JavaHttpUtils {
      * @return The corresponding body publisher
      * @throws IOException if an error occurs when reading files if given in the data parameter
      */
-    public static BodyPublisher ofMimeMultipartData(Map<Object, Object> data, String boundary, Charset charset) throws IOException {
+    public static BodyPublisher mimeMultipartData(Map<Object, Object> data, String boundary, Charset charset) throws IOException {
         List<byte[]> byteArrays = new ArrayList<>();
         byte[] separator = ("--" + boundary + "\r\nContent-Disposition: form-data; name=").getBytes(charset);
         for (Map.Entry<Object, Object> entry : data.entrySet()) {
@@ -87,7 +86,7 @@ public class JavaHttpUtils {
     }
 
     /**
-     * Creates the {@link Map} for {@link #ofMimeMultipartData(Map, String, Charset)} with the given files.
+     * Creates the {@link Map} for {@link #mimeMultipartData(Map, String, Charset)} with the given files.
      *
      * @param files The files
      * @return The filled map
