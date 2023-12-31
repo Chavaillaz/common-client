@@ -98,12 +98,22 @@ public class Utils {
      * @return The optional header value
      */
     public static Optional<String> getCookieHeader(Authentication authentication) {
-        List<Pair<String, String>> values = new ArrayList<>();
-        authentication.fillCookies((key, value) -> values.add(Pair.of(key, value)));
-        if (values.isEmpty()) {
+        List<Pair<String, String>> cookies = new ArrayList<>();
+        authentication.fillCookies((key, value) -> cookies.add(Pair.of(key, value)));
+        return getCookieHeader(cookies);
+    }
+
+    /**
+     * Gets the value of the {@code Cookie} header for the given cookies.
+     *
+     * @param cookies The cookies with for each its key and value
+     * @return The optional header value
+     */
+    public static Optional<String> getCookieHeader(List<Pair<String, String>> cookies) {
+        if (cookies.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(values.stream()
+        return Optional.of(cookies.stream()
                 .map(pair -> pair.getKey() + "=" + pair.getValue())
                 .collect(joining("; ")));
     }

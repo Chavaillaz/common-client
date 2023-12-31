@@ -83,7 +83,17 @@ public class ProxyConfiguration {
      * @return The full proxy URL
      */
     public String getUrl() {
-        return scheme + "://" + host + ":" + port;
+        StringBuilder url = new StringBuilder();
+        if (scheme != null) {
+            url.append(scheme);
+            url.append("://");
+        }
+        url.append(host);
+        if (port != null) {
+            url.append(":");
+            url.append(port);
+        }
+        return url.toString();
     }
 
 }
