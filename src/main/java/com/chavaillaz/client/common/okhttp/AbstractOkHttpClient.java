@@ -20,7 +20,7 @@ import okhttp3.ResponseBody;
 /**
  * Abstract class implementing common parts for OkHttp.
  */
-public class AbstractOkHttpClient extends AbstractHttpClient implements AutoCloseable {
+public abstract class AbstractOkHttpClient extends AbstractHttpClient implements AutoCloseable {
 
     public static final RequestBody EMPTY_BODY = RequestBody.create(EMPTY, null);
     public static final MediaType MEDIA_TYPE_JSON = MediaType.parse(HEADER_CONTENT_JSON);

@@ -28,7 +28,7 @@ import org.apache.hc.core5.http.protocol.HttpContext;
 /**
  * Abstract class implementing common parts for Apache HTTP.
  */
-public class AbstractApacheHttpClient extends AbstractHttpClient implements AutoCloseable {
+public abstract class AbstractApacheHttpClient extends AbstractHttpClient implements AutoCloseable {
 
     protected final CloseableHttpAsyncClient client;
 

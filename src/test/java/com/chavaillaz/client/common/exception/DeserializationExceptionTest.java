@@ -20,7 +20,7 @@ class DeserializationExceptionTest {
     }
 
     @Test
-    void testExcepionMessageWithJavaType() {
+    void testExceptionMessageWithJavaType() {
         JavaType type = TypeFactory.defaultInstance()
                 .constructSimpleType(String.class, new JavaType[]{});
         Exception root = new Exception("Root");

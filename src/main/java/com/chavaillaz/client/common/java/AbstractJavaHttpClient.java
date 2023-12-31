@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.JavaType;
 /**
  * Abstract class implementing common parts for Java HTTP.
  */
-public class AbstractJavaHttpClient extends AbstractHttpClient implements AutoCloseable {
+public abstract class AbstractJavaHttpClient extends AbstractHttpClient implements AutoCloseable {
 
     protected final HttpClient client;
 
