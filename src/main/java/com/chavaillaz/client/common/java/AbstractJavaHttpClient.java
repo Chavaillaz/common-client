@@ -30,7 +30,7 @@ public abstract class AbstractJavaHttpClient extends AbstractHttpClient implemen
      * @param baseUrl        The base URL of service API
      * @param authentication The authentication information
      */
-    public AbstractJavaHttpClient(HttpClient client, String baseUrl, Authentication authentication) {
+    protected AbstractJavaHttpClient(HttpClient client, String baseUrl, Authentication authentication) {
         super(baseUrl, authentication);
         this.client = client;
     }

@@ -39,7 +39,7 @@ public abstract class AbstractApacheHttpClient extends AbstractHttpClient implem
      * @param baseUrl        The base URL of service API
      * @param authentication The authentication information
      */
-    public AbstractApacheHttpClient(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication) {
+    protected AbstractApacheHttpClient(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication) {
         super(baseUrl, authentication);
         this.client = client;
         this.client.start();

@@ -35,7 +35,7 @@ public abstract class AbstractOkHttpClient extends AbstractHttpClient implements
      * @param baseUrl        The base URL of service API
      * @param authentication The authentication information
      */
-    public AbstractOkHttpClient(OkHttpClient client, String baseUrl, Authentication authentication) {
+    protected AbstractOkHttpClient(OkHttpClient client, String baseUrl, Authentication authentication) {
         super(baseUrl, authentication);
         this.client = client;
     }
