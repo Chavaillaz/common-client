@@ -1,7 +1,5 @@
 package com.chavaillaz.client.common.security;
 
-import static com.chavaillaz.client.common.utility.Utils.encodeBase64;
-
 import java.util.function.BiConsumer;
 
 import lombok.Getter;
@@ -18,7 +16,7 @@ public class TokenAuthentication extends AnonymousAuthentication {
 
     @Override
     public void fillHeaders(BiConsumer<String, String> addHeader) {
-        addHeader.accept("Authorization", "Bearer " + encodeBase64(getToken()));
+        addHeader.accept("Authorization", "Bearer " + getToken());
     }
 
 }

@@ -22,7 +22,7 @@ class TokenAuthenticationTest {
 
         String authorization = headers.get("Authorization");
         assertNotNull(authorization);
-        assertEquals("Bearer VG9rZW4=", authorization);
+        assertEquals("Bearer Token", authorization);
 
         Map<String, String> cookies = new HashMap<>();
         authentication.fillCookies(cookies::put);
