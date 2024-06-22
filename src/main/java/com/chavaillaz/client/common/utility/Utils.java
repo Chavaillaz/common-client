@@ -14,15 +14,20 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
+import com.chavaillaz.client.common.exception.AsynchronousException;
 import com.chavaillaz.client.common.security.Authentication;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * General utilities for all clients.
  */
+@Slf4j
 @UtilityClass
 public class Utils {
 
@@ -141,6 +146,21 @@ public class Utils {
         return ofNullable(System.getenv(propertyKey))
                 .or(() -> ofNullable(System.getProperty(propertyKey)))
                 .orElse(defaultValue);
+    }
+
+    /**
+     * Logs the given result or throwable if present.
+     * Expected to be used with {@link CompletableFuture#whenComplete(BiConsumer)}.
+     *
+     * @param result    The result returned by the {@link CompletableFuture}
+     * @param throwable The exception thrown by the {@link CompletableFuture}
+     */
+    public static void logAsynchronousException(Object result, Throwable throwable) {
+        if (throwable != null) {
+            log.error("Asynchronous execution failed: {}", throwable.getMessage(), new AsynchronousException(throwable));
+        } else {
+            log.debug("Asynchronous execution completed: {}", result);
+        }
     }
 
 }
