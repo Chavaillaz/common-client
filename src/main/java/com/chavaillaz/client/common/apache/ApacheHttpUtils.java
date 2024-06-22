@@ -77,7 +77,7 @@ public class ApacheHttpUtils {
      * @param data The data to format and send as form data
      * @return The corresponding parameters
      */
-    public NameValuePair[] formData(Map<Object, Object> data) {
+    public static NameValuePair[] formData(Map<Object, Object> data) {
         List<NameValuePair> parameters = new ArrayList<>();
         data.forEach((key, value) -> parameters.add(new BasicNameValuePair(key.toString(), value.toString())));
         return parameters.toArray(new NameValuePair[0]);

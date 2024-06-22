@@ -69,7 +69,7 @@ public class OkHttpUtils {
      * @param data The data to format and send as form data
      * @return The corresponding request body
      */
-    public RequestBody formData(Map<Object, Object> data) {
+    public static RequestBody formData(Map<Object, Object> data) {
         MultipartBody.Builder form = new MultipartBody.Builder().setType(FORM);
         data.forEach((key, value) -> form.addFormDataPart(key.toString(), value.toString()));
         return form.build();
@@ -83,7 +83,7 @@ public class OkHttpUtils {
      * @return The body content or {@code null} if not present
      * @throws IOException If an error occurs when reading the body content
      */
-    public String getBody(Response response) throws IOException {
+    public static String getBody(Response response) throws IOException {
         try (ResponseBody body = response.body()) {
             return body != null ? body.string() : null;
         }
@@ -96,7 +96,7 @@ public class OkHttpUtils {
      * @param response The HTTP response
      * @return The body content or the exception message when reading it
      */
-    public String getBodyOrError(Response response) {
+    public static String getBodyOrError(Response response) {
         try (ResponseBody body = response.body()) {
             return body != null ? body.string() : null;
         } catch (Exception e) {

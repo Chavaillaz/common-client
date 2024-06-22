@@ -58,7 +58,7 @@ public class VertxUtils {
      * @param data The data to format and send as form data
      * @return The corresponding parameters
      */
-    public MultiMap formData(Map<Object, Object> data) {
+    public static MultiMap formData(Map<Object, Object> data) {
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         data.forEach((key, value) -> form.set(key.toString(), value.toString()));
         return form;
