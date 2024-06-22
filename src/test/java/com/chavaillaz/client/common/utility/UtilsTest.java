@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Optional;
@@ -23,7 +24,7 @@ import org.junit.jupiter.api.Test;
 class UtilsTest {
 
     @Test
-    void testReadInputStream() {
+    void testReadInputStream() throws IOException {
         String expected = "Test";
         InputStream stream = new ByteArrayInputStream(expected.getBytes(UTF_8));
         String result = readInputStream(stream);

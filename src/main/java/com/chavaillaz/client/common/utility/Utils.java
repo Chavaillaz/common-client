@@ -6,6 +6,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.joining;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -19,7 +20,6 @@ import java.util.function.BiConsumer;
 
 import com.chavaillaz.client.common.exception.AsynchronousException;
 import com.chavaillaz.client.common.security.Authentication;
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
@@ -37,9 +37,9 @@ public class Utils {
      *
      * @param inputStream The input stream to read
      * @return The {@link String} representing the content of the input stream
-     * @throws RuntimeException If some I/O error occurs when reading the input stream
+     * @throws IOException If some I/O error occurs when reading the input stream
      */
-    public static String readInputStream(InputStream inputStream) {
+    public static String readInputStream(InputStream inputStream) throws IOException {
         return readInputStream(inputStream, StandardCharsets.UTF_8);
     }
 
@@ -49,10 +49,9 @@ public class Utils {
      * @param inputStream The input stream to read
      * @param charset     The charset to use to read the input stream
      * @return The {@link String} representing the content of the input stream
-     * @throws RuntimeException If some I/O error occurs when reading the input stream
+     * @throws IOException If some I/O error occurs when reading the input stream
      */
-    @SneakyThrows
-    public static String readInputStream(InputStream inputStream, Charset charset) {
+    public static String readInputStream(InputStream inputStream, Charset charset) throws IOException {
         ByteArrayOutputStream result = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         for (int length; (length = inputStream.read(buffer)) != -1; ) {
