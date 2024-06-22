@@ -5,6 +5,7 @@ import static java.nio.file.Files.probeContentType;
 import static okhttp3.MultipartBody.FORM;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.time.Duration;
@@ -80,11 +81,26 @@ public class OkHttpUtils {
      *
      * @param response The HTTP response
      * @return The body content or {@code null} if not present
+     * @throws IOException If an error occurs when reading the body content
      */
-    @SneakyThrows
-    public String getBody(Response response) {
+    public String getBody(Response response) throws IOException {
         try (ResponseBody body = response.body()) {
             return body != null ? body.string() : null;
+        }
+    }
+
+    /**
+     * Gets the body of the given response or the exception message in case of error.
+     * Note that the body can only be read once.
+     *
+     * @param response The HTTP response
+     * @return The body content or the exception message when reading it
+     */
+    public String getBodyOrError(Response response) {
+        try (ResponseBody body = response.body()) {
+            return body != null ? body.string() : null;
+        } catch (Exception e) {
+            return e.getMessage();
         }
     }
 

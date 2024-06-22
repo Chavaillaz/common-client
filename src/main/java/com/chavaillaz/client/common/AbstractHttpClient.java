@@ -171,4 +171,18 @@ public abstract class AbstractHttpClient {
         return new ResponseException(code, body);
     }
 
+    /**
+     * Creates a new response exception, called in case the request didn't return a success code.
+     * Override this method to parse the body returned in order to obtain an understandable error message.
+     *
+     * @param method The request method
+     * @param url    The request URL
+     * @param code   The status code returned
+     * @param body   The content body
+     * @return The response exception
+     */
+    public ResponseException responseException(String method, String url, int code, String body) {
+        return new ResponseException(method, url, code, body);
+    }
+
 }

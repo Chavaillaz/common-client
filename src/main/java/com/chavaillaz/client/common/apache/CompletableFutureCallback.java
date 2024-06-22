@@ -3,6 +3,7 @@ package com.chavaillaz.client.common.apache;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.AbstractHttpClient;
+import com.chavaillaz.client.common.exception.RequestException;
 import com.chavaillaz.client.common.exception.ResponseException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,12 @@ public class CompletableFutureCallback implements FutureCallback<SimpleHttpRespo
     public void completed(SimpleHttpResponse response) {
         log.debug("Request {} completed: {}", request, response);
         if (response.getCode() >= 400) {
-            future.completeExceptionally(client.responseException(response.getCode(), response.getBodyText()));
+            future.completeExceptionally(
+                    client.responseException(
+                            request.getMethod(),
+                            request.getRequestUri(),
+                            response.getCode(),
+                            response.getBodyText()));
         } else {
             future.complete(response);
         }
@@ -36,7 +42,11 @@ public class CompletableFutureCallback implements FutureCallback<SimpleHttpRespo
     @Override
     public void failed(Exception exception) {
         log.debug("Request {} failed: {}", request, exception.getMessage());
-        future.completeExceptionally(exception);
+        future.completeExceptionally(
+                new RequestException(
+                        request.getMethod(),
+                        request.getRequestUri(),
+                        exception));
     }
 
     @Override

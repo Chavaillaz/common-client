@@ -70,7 +70,12 @@ public abstract class AbstractJavaHttpClient extends AbstractHttpClient implemen
      */
     protected <T> HttpResponse<T> checkResponse(HttpResponse<T> response) {
         if (response.statusCode() >= 400) {
-            throw responseException(response.statusCode(), Objects.toString(response.body(), null));
+            throw responseException(
+                    response.request().method(),
+                    response.request().uri().toString(),
+                    response.statusCode(),
+                    Objects.toString(response.body(), null)
+            );
         }
         return response;
     }

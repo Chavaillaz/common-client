@@ -1,5 +1,7 @@
 package com.chavaillaz.client.common.exception;
 
+import static org.apache.commons.lang3.StringUtils.SPACE;
+
 import lombok.Getter;
 
 /**
@@ -19,6 +21,18 @@ public class ResponseException extends ClientException {
      */
     public ResponseException(int statusCode, String body) {
         this(statusCode, body, errorMessage(statusCode, body));
+    }
+
+    /**
+     * Creates a new response exception.
+     *
+     * @param method     The request HTTP method
+     * @param url        The request URL
+     * @param statusCode The status code returned
+     * @param body       The content body
+     */
+    public ResponseException(String method, String url, int statusCode, String body) {
+        this(statusCode, body, errorMessage(statusCode, body) + " for " + method + SPACE + url);
     }
 
     /**

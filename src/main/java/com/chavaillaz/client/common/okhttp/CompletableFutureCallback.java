@@ -1,16 +1,18 @@
 package com.chavaillaz.client.common.okhttp;
 
+import static com.chavaillaz.client.common.okhttp.OkHttpUtils.getBodyOrError;
+
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.AbstractHttpClient;
+import com.chavaillaz.client.common.exception.RequestException;
 import com.chavaillaz.client.common.exception.ResponseException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 /**
  * Callback for OkHttp Client in order to transfer state to a {@link CompletableFuture}.
@@ -29,23 +31,29 @@ public class CompletableFutureCallback implements Callback {
         log.debug("{} completed: {}", call.request(), response);
 
         if (response.code() >= 400) {
-            String content;
-            try (ResponseBody body = response.body()) {
-                content = body != null ? body.string() : null;
-            } catch (Exception e) {
-                content = e.getMessage();
-            }
-            future.completeExceptionally(client.responseException(response.code(), content));
+            future.completeExceptionally(getResponseException(call, response));
         } else {
             future.complete(response);
         }
     }
 
+    private ResponseException getResponseException(Call call, Response response) {
+        String content = getBodyOrError(response);
+        String method = call.request().method();
+        String url = call.request().url().uri().toString();
+        return client.responseException(method, url, response.code(), content);
+    }
+
     @Override
     public void onFailure(Call call, IOException exception) {
         log.debug("{} failed: {}", call.request(), exception.getMessage());
-        future.completeExceptionally(exception);
+        future.completeExceptionally(getFailureException(call, exception));
     }
 
+    private RequestException getFailureException(Call call, IOException exception) {
+        String method = call.request().method();
+        String url = call.request().url().uri().toString();
+        return new RequestException(method, url, exception);
+    }
 
 }
