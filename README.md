@@ -23,7 +23,7 @@ using [Jackson][Jackson].
 Presently, it supports the following HTTP clients:
 
 - [Java HTTP client][JavaHttp] (included since Java 11)
-- [Apache HTTP client][ApacheHttp] 5.4
+- [Apache HTTP client][ApacheHttp] 5.5
 - [OkHttp client][OkHttp] 4.12
 - [Vert.x client][Vertx] 4.5
 
@@ -32,7 +32,6 @@ Presently, it supports the following HTTP clients:
 The dependency is available in maven central (see badge for version):
 
 ```xml
-
 <dependency>
     <groupId>com.chavaillaz</groupId>
     <artifactId>common-client</artifactId>
