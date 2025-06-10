@@ -13,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,6 +20,7 @@ import java.util.Optional;
 import com.chavaillaz.client.common.utility.ProxyConfiguration;
 import com.chavaillaz.client.common.utility.Utils;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Utilities for Java HTTP Client.
@@ -62,10 +62,10 @@ public class JavaHttpUtils {
      * @return The corresponding body publisher
      * @throws IOException if an error occurs when reading files if given in the data parameter
      */
-    public static BodyPublisher mimeMultipartData(Map<Object, Object> data, String boundary, Charset charset) throws IOException {
+    public static BodyPublisher mimeMultipartData(List<Pair<Object, Object>> data, String boundary, Charset charset) throws IOException {
         List<byte[]> byteArrays = new ArrayList<>();
         byte[] separator = ("--" + boundary + "\r\nContent-Disposition: form-data; name=").getBytes(charset);
-        for (Map.Entry<Object, Object> entry : data.entrySet()) {
+        for (Pair<Object, Object> entry : data) {
             byteArrays.add(separator);
 
             // If value is type of Path (file) append content type with file name and file binaries, otherwise simply append key=value
@@ -86,15 +86,15 @@ public class JavaHttpUtils {
     }
 
     /**
-     * Creates the {@link Map} for {@link #mimeMultipartData(Map, String, Charset)} with the given files.
+     * Creates the {@link List} for {@link #mimeMultipartData(List, String, Charset)} with the given files.
      *
      * @param files The files
-     * @return The filled map
+     * @return The filled list
      */
-    public static Map<Object, Object> multipartWithFiles(File... files) {
-        Map<Object, Object> data = new LinkedHashMap<>();
+    public static List<Pair<Object, Object>> multipartWithFiles(File... files) {
+        List<Pair<Object, Object>> data = new ArrayList<>();
         for (File file : files) {
-            data.put("file", file.toPath());
+            data.add(Pair.of("file", file.toPath()));
         }
         return data;
     }
