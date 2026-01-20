@@ -23,7 +23,7 @@ using [Jackson][Jackson].
 Presently, it supports the following HTTP clients:
 
 - [Java HTTP client][JavaHttp] (included since Java 11)
-- [Apache HTTP client][ApacheHttp] 5.5
+- [Apache HTTP client][ApacheHttp] 5.6
 - [OkHttp client][OkHttp] 4.12
 - [Vert.x client][Vertx] 4.5
 
