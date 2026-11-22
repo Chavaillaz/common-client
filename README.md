@@ -28,6 +28,15 @@ Presently, it supports the following HTTP clients:
 - [OkHttp client][OkHttp] 4.12
 - [Vert.x client][Vertx] 4.5
 
+## Requirements
+
+- **Java 17** or later
+- **One of the HTTP clients** above, which a library built on this one declares as a dependency of its own, all of
+  them being optional dependencies of this library, but for the one of the JDK
+
+The library is a named module, `com.chavaillaz.client.common`, exporting all its packages. It requires the modules of
+Apache HttpClient, OkHttp and Vert.x statically, so that a module built on it requires the one it calls through.
+
 ## Installation
 
 The dependency is available in maven central (see badge for version):
