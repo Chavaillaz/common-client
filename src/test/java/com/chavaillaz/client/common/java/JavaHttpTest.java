@@ -1,38 +1,28 @@
 package com.chavaillaz.client.common.java;
 
 import static com.chavaillaz.client.common.java.JavaHttpUtils.defaultHttpClientBuilder;
-import static com.chavaillaz.client.common.model.UserApi.stubForUserApi;
-import static org.assertj.core.api.Assertions.assertThat;
 
-import java.net.http.HttpClient;
+import java.net.ConnectException;
 
-import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
-import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import org.junit.jupiter.api.BeforeEach;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
-import com.chavaillaz.client.common.model.User;
-import com.chavaillaz.client.common.security.AnonymousAuthentication;
+import com.chavaillaz.client.common.model.AbstractUserApiTest;
+import com.chavaillaz.client.common.model.UserApi;
+import com.chavaillaz.client.common.security.Authentication;
+import com.chavaillaz.client.common.utility.ProxyConfiguration;
 
-@WireMockTest
 @DisplayName("AbstractJavaHttpClient")
-class JavaHttpTest {
+class JavaHttpTest extends AbstractUserApiTest {
 
-    @BeforeEach
-    void setup() {
-        stubForUserApi();
+    @Override
+    protected UserApi newUserApi(String baseUrl, Authentication authentication, @Nullable ProxyConfiguration proxy) {
+        return new JavaHttpUserApi(defaultHttpClientBuilder(proxy).build(), baseUrl, authentication);
     }
 
-    @Test
-    @DisplayName("Gets the user the service answers with")
-    void testJava(WireMockRuntimeInfo wiremock) {
-        HttpClient client = defaultHttpClientBuilder(null).build();
-        try (var api = new JavaHttpUserApi(client, wiremock.getHttpBaseUrl(), new AnonymousAuthentication())) {
-            User user = api.getUser().join();
-            assertThat(user).isNotNull();
-            assertThat(user.getUsername()).isEqualTo("WireMock");
-        }
+    @Override
+    protected Class<? extends Exception> unreachableException() {
+        return ConnectException.class;
     }
 
 }

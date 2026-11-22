@@ -1,38 +1,38 @@
 package com.chavaillaz.client.common.vertx;
 
-import static com.chavaillaz.client.common.model.UserApi.stubForUserApi;
 import static com.chavaillaz.client.common.vertx.VertxUtils.defaultWebClientOptions;
-import static org.assertj.core.api.Assertions.assertThat;
 
-import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
-import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import java.net.ConnectException;
+
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.client.WebClient;
-import org.junit.jupiter.api.BeforeEach;
+import org.jspecify.annotations.Nullable;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
-import com.chavaillaz.client.common.model.User;
-import com.chavaillaz.client.common.security.AnonymousAuthentication;
+import com.chavaillaz.client.common.model.AbstractUserApiTest;
+import com.chavaillaz.client.common.model.UserApi;
+import com.chavaillaz.client.common.security.Authentication;
+import com.chavaillaz.client.common.utility.ProxyConfiguration;
 
-@WireMockTest
 @DisplayName("AbstractVertxHttpClient")
-class VertxHttpTest {
+class VertxHttpTest extends AbstractUserApiTest {
 
-    @BeforeEach
-    void setup() {
-        stubForUserApi();
+    private static final Vertx VERTX = Vertx.vertx();
+
+    @AfterAll
+    static void closeVertx() {
+        VERTX.close().toCompletionStage().toCompletableFuture().join();
     }
 
-    @Test
-    @DisplayName("Gets the user the service answers with")
-    void testVertx(WireMockRuntimeInfo wiremock) throws Exception {
-        WebClient client = WebClient.create(Vertx.vertx(), defaultWebClientOptions(null));
-        try (var api = new VertxHttpUserApi(client, wiremock.getHttpBaseUrl(), new AnonymousAuthentication())) {
-            User user = api.getUser().join();
-            assertThat(user).isNotNull();
-            assertThat(user.getUsername()).isEqualTo("WireMock");
-        }
+    @Override
+    protected UserApi newUserApi(String baseUrl, Authentication authentication, @Nullable ProxyConfiguration proxy) {
+        return new VertxHttpUserApi(WebClient.create(VERTX, defaultWebClientOptions(proxy)), baseUrl, authentication);
+    }
+
+    @Override
+    protected Class<? extends Exception> unreachableException() {
+        return ConnectException.class;
     }
 
 }
