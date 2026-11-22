@@ -9,6 +9,13 @@ import java.util.function.BiConsumer;
 public abstract class Authentication {
 
     /**
+     * Creates an authentication, which a subclass fills the headers and cookies of.
+     */
+    protected Authentication() {
+        // Nothing to set up, the subclass carrying what the requests need
+    }
+
+    /**
      * Fills the credentials in the headers using the given method.
      *
      * @param addHeader The filling method

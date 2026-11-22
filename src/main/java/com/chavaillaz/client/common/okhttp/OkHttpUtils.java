@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import lombok.SneakyThrows;
-import lombok.experimental.UtilityClass;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -26,8 +25,11 @@ import com.chavaillaz.client.common.utility.ProxyConfiguration;
 /**
  * Utilities for OkHttp Client.
  */
-@UtilityClass
-public class OkHttpUtils {
+public final class OkHttpUtils {
+
+    private OkHttpUtils() {
+        // This utility class should not be instantiated
+    }
 
     /**
      * Creates a new asynchronous OkHttp HTTP client builder with default configuration (30 seconds timeout).

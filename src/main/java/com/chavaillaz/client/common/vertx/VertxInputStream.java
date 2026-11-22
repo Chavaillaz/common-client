@@ -4,16 +4,23 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import io.vertx.core.buffer.Buffer;
-import lombok.RequiredArgsConstructor;
 
 /**
  * Input stream reading the content of a Vert.x {@link Buffer}.
  */
-@RequiredArgsConstructor
 public class VertxInputStream extends InputStream {
 
     private final Buffer buffer;
     private int position = 0;
+
+    /**
+     * Creates a stream reading the given buffer from its start.
+     *
+     * @param buffer The buffer to read
+     */
+    public VertxInputStream(Buffer buffer) {
+        this.buffer = buffer;
+    }
 
     @Override
     public int read() throws IOException {

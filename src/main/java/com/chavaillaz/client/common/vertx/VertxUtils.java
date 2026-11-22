@@ -11,15 +11,17 @@ import io.vertx.core.net.ProxyOptions;
 import io.vertx.ext.web.client.WebClientOptions;
 import io.vertx.ext.web.multipart.MultipartForm;
 import lombok.SneakyThrows;
-import lombok.experimental.UtilityClass;
 
 import com.chavaillaz.client.common.utility.ProxyConfiguration;
 
 /**
  * Utilities for Vert.x Client.
  */
-@UtilityClass
-public class VertxUtils {
+public final class VertxUtils {
+
+    private VertxUtils() {
+        // This utility class should not be instantiated
+    }
 
     /**
      * Creates new options for Vert.x web client with default configuration (30 seconds timeout).

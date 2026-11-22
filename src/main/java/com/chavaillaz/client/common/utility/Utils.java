@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -29,8 +28,11 @@ import com.chavaillaz.client.common.security.Authentication;
  * General utilities for all clients.
  */
 @Slf4j
-@UtilityClass
-public class Utils {
+public final class Utils {
+
+    private Utils() {
+        // This utility class should not be instantiated
+    }
 
     /**
      * Gets the content of an {@link InputStream} and convert it to a {@link String}.

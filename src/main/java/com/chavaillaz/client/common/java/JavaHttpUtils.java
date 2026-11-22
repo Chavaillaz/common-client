@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.chavaillaz.client.common.utility.ProxyConfiguration;
@@ -26,8 +25,11 @@ import com.chavaillaz.client.common.utility.Utils;
 /**
  * Utilities for Java HTTP Client.
  */
-@UtilityClass
-public class JavaHttpUtils {
+public final class JavaHttpUtils {
+
+    private JavaHttpUtils() {
+        // This utility class should not be instantiated
+    }
 
     /**
      * Creates a new asynchronous Java HTTP client builder with default configuration (30 seconds timeout).

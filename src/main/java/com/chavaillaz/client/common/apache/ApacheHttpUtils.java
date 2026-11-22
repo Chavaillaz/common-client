@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import lombok.SneakyThrows;
-import lombok.experimental.UtilityClass;
 import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.cookie.BasicCookieStore;
@@ -28,8 +27,11 @@ import com.chavaillaz.client.common.utility.ProxyConfiguration;
 /**
  * Utilities for Apache HTTP Client.
  */
-@UtilityClass
-public class ApacheHttpUtils {
+public final class ApacheHttpUtils {
+
+    private ApacheHttpUtils() {
+        // This utility class should not be instantiated
+    }
 
     /**
      * Creates a new asynchronous Apache HTTP client builder with default configuration (30 seconds timeout).

@@ -5,7 +5,6 @@ import static com.chavaillaz.client.common.okhttp.OkHttpUtils.getBodyOrError;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -21,11 +20,21 @@ import com.chavaillaz.client.common.exception.ResponseException;
  * or if a connection failure happens (e.g. timeout).
  */
 @Slf4j
-@AllArgsConstructor
 public class CompletableFutureCallback implements Callback {
 
     private final AbstractHttpClient client;
     private final CompletableFuture<Response> future;
+
+    /**
+     * Creates a callback completing the given future with the response of the call, or failing it.
+     *
+     * @param client The client making the call, which builds the exception of an error response
+     * @param future The future to complete
+     */
+    public CompletableFutureCallback(AbstractHttpClient client, CompletableFuture<Response> future) {
+        this.client = client;
+        this.future = future;
+    }
 
     @Override
     public void onResponse(Call call, Response response) {

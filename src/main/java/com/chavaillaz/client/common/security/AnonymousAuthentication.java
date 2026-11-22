@@ -7,6 +7,13 @@ import java.util.function.BiConsumer;
  */
 public class AnonymousAuthentication extends Authentication {
 
+    /**
+     * Creates an authentication adding nothing to the requests.
+     */
+    public AnonymousAuthentication() {
+        // Nothing to set up, an anonymous request carrying no credentials
+    }
+
     @Override
     public void fillHeaders(BiConsumer<String, String> addHeader) {
         // Nothing to do
