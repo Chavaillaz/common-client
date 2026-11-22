@@ -272,6 +272,10 @@
                     <execution>
                         <id>default-testCompile</id>
                         <configuration>
+                            <!-- The tests are compiled on the class path rather than into the module: the clients
+                                 they implement expose the model of the tests, which the module would otherwise have
+                                 to export for the tests alone -->
+                            <useModulePath>false</useModulePath>
                             <compilerArgs>
                                 <arg>-Xlint:all,-processing,-classfile</arg>
                             </compilerArgs>
@@ -302,6 +306,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.4</version>
+                <configuration>
+                    <!-- Run on the class path, where the tests are compiled (see maven-compiler-plugin) -->
+                    <useModulePath>false</useModulePath>
+                </configuration>
             </plugin>
 
             <plugin>
@@ -320,6 +328,8 @@
                 <configuration>
                     <configLocation>${project.basedir}/checkstyle.xml</configLocation>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <!-- Checkstyle 12, the last to run on Java 17, does not parse a module declaration -->
+                    <excludes>module-info.java</excludes>
                     <consoleOutput>true</consoleOutput>
                     <failOnViolation>true</failOnViolation>
                 </configuration>
