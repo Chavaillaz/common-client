@@ -8,12 +8,14 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.chavaillaz.client.common.model.User;
 import com.chavaillaz.client.common.security.AnonymousAuthentication;
 
 @WireMockTest
+@DisplayName("AbstractOkHttpClient")
 class OkHttpTest {
 
     @BeforeEach
@@ -22,6 +24,7 @@ class OkHttpTest {
     }
 
     @Test
+    @DisplayName("Gets the user the service answers with")
     void testOkHttp(WireMockRuntimeInfo wiremock) throws Exception {
         OkHttpClient client = defaultHttpClientBuilder(null).build();
         try (var api = new OkHttpUserApi(client, wiremock.getHttpBaseUrl(), new AnonymousAuthentication())) {

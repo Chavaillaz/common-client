@@ -6,11 +6,14 @@ import static org.assertj.core.api.Assertions.entry;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("TokenAuthentication")
 class TokenAuthenticationTest {
 
     @Test
+    @DisplayName("Fills a bearer authorization header, and no cookie")
     void testTokenAuthentication() {
         TokenAuthentication authentication = new TokenAuthentication("Token");
         assertThat(authentication.getToken()).isEqualTo("Token");

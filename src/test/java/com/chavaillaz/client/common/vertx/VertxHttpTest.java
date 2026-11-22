@@ -9,12 +9,14 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.client.WebClient;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.chavaillaz.client.common.model.User;
 import com.chavaillaz.client.common.security.AnonymousAuthentication;
 
 @WireMockTest
+@DisplayName("AbstractVertxHttpClient")
 class VertxHttpTest {
 
     @BeforeEach
@@ -23,6 +25,7 @@ class VertxHttpTest {
     }
 
     @Test
+    @DisplayName("Gets the user the service answers with")
     void testVertx(WireMockRuntimeInfo wiremock) throws Exception {
         WebClient client = WebClient.create(Vertx.vertx(), defaultWebClientOptions(null));
         try (var api = new VertxHttpUserApi(client, wiremock.getHttpBaseUrl(), new AnonymousAuthentication())) {

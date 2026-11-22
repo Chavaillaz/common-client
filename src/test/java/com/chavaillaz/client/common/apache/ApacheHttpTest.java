@@ -16,6 +16,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.chavaillaz.client.common.model.User;
@@ -23,6 +24,7 @@ import com.chavaillaz.client.common.security.AnonymousAuthentication;
 import com.chavaillaz.client.common.security.Authentication;
 
 @WireMockTest
+@DisplayName("AbstractApacheHttpClient")
 class ApacheHttpTest {
 
     @BeforeEach
@@ -31,6 +33,7 @@ class ApacheHttpTest {
     }
 
     @Test
+    @DisplayName("Gets the user the service answers with")
     void testApache(WireMockRuntimeInfo wiremock) throws Exception {
         CloseableHttpAsyncClient client = defaultHttpClientBuilder(null).build();
         try (var api = new ApacheHttpUserApi(client, wiremock.getHttpBaseUrl(), new AnonymousAuthentication())) {
@@ -41,6 +44,7 @@ class ApacheHttpTest {
     }
 
     @Test
+    @DisplayName("Sends the cookies the authentication fills")
     void testApacheCookies(WireMockRuntimeInfo wiremock) throws Exception {
         // Given: an authentication filling a cookie, for which the service answers with a user of its own
         stubFor(get(URL_USER).withCookie("session", equalTo("abc")).willReturn(aResponse()

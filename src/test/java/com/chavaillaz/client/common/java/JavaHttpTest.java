@@ -9,12 +9,14 @@ import java.net.http.HttpClient;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.chavaillaz.client.common.model.User;
 import com.chavaillaz.client.common.security.AnonymousAuthentication;
 
 @WireMockTest
+@DisplayName("AbstractJavaHttpClient")
 class JavaHttpTest {
 
     @BeforeEach
@@ -23,6 +25,7 @@ class JavaHttpTest {
     }
 
     @Test
+    @DisplayName("Gets the user the service answers with")
     void testJava(WireMockRuntimeInfo wiremock) {
         HttpClient client = defaultHttpClientBuilder(null).build();
         try (var api = new JavaHttpUserApi(client, wiremock.getHttpBaseUrl(), new AnonymousAuthentication())) {

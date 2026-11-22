@@ -16,13 +16,16 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.chavaillaz.client.common.security.Authentication;
 
+@DisplayName("Utils")
 class UtilsTest {
 
     @Test
+    @DisplayName("Reads a stream as UTF-8 text")
     void testReadInputStream() throws IOException {
         String expected = "Test";
         InputStream stream = new ByteArrayInputStream(expected.getBytes(UTF_8));
@@ -31,6 +34,7 @@ class UtilsTest {
     }
 
     @Test
+    @DisplayName("Encodes the entries of a map as a query string")
     void testEncodeQuery() {
         Map<Object, Object> map = new TreeMap<>();
         map.put("A", 1);
@@ -40,11 +44,13 @@ class UtilsTest {
     }
 
     @Test
+    @DisplayName("Encodes a value in Base64")
     void testEncodeBase64() {
         assertThat(encodeBase64("Test")).isEqualTo("VGVzdA==");
     }
 
     @Test
+    @DisplayName("Joins the cookies of an authentication into one header")
     void testCookieHeaders() {
         Authentication authentication = new Authentication() {
 
@@ -66,6 +72,7 @@ class UtilsTest {
     }
 
     @Test
+    @DisplayName("Reads a property from the environment or the system, or falls back to a default")
     void testProperty() {
         System.setProperty("Test", "Value");
         assertThat(getProperty("Unknown")).isNull();

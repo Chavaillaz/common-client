@@ -6,11 +6,14 @@ import static org.assertj.core.api.Assertions.entry;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("PasswordAuthentication")
 class PasswordAuthenticationTest {
 
     @Test
+    @DisplayName("Fills a basic authorization header, and no cookie")
     void testPasswordAuthentication() {
         PasswordAuthentication authentication = new PasswordAuthentication("User", "Password");
         assertThat(authentication.getUsername()).isEqualTo("User");
