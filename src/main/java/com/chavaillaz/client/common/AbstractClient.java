@@ -35,33 +35,44 @@ public abstract class AbstractClient<C, I> implements Client<I> {
      */
     protected abstract C newHttpClient();
 
+    /**
+     * Gives back this client as the type of its interface, for the methods configuring it to be chained.
+     *
+     * @return This client
+     */
+    @SuppressWarnings("unchecked")
+    private I self() {
+        // The subclass names its own interface as I, which nothing else can check
+        return (I) this;
+    }
+
     @Override
     public I withProxy(String host, Integer port) {
         this.proxy = ProxyConfiguration.from(host, port);
-        return (I) this;
+        return self();
     }
 
     @Override
     public I withProxy(String url) {
         this.proxy = ProxyConfiguration.from(url);
-        return (I) this;
+        return self();
     }
 
     @Override
     public I withAnonymousAuthentication() {
         this.authentication = new AnonymousAuthentication();
-        return (I) this;
+        return self();
     }
 
     @Override
     public I withTokenAuthentication(String token) {
         this.authentication = new TokenAuthentication(token);
-        return (I) this;
+        return self();
     }
 
     @Override
     public I withUserAuthentication(String username, String password) {
         this.authentication = new PasswordAuthentication(username, password);
-        return (I) this;
+        return self();
     }
 }
