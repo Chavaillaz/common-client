@@ -12,7 +12,7 @@
 
 [Vertx]: https://vertx.io/docs/vertx-web-client/java/
 
-![Dependency Check](https://github.com/chavaillaz/common-client/actions/workflows/snyk.yml/badge.svg)
+![Dependency Check](https://github.com/chavaillaz/common-client/actions/workflows/dependency-check.yml/badge.svg)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.chavaillaz/common-client/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.chavaillaz/common-client)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
