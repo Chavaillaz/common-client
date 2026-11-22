@@ -11,6 +11,7 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -43,7 +44,7 @@ public abstract class AbstractHttpClient {
 
     protected ObjectMapper objectMapper = JsonMapper.builder()
             .addModule(new JavaTimeModule())
-            .serializationInclusion(NON_NULL)
+            .defaultPropertyInclusion(JsonInclude.Value.construct(NON_NULL, NON_NULL))
             .enable(ACCEPT_CASE_INSENSITIVE_PROPERTIES)
             .disable(WRITE_DATES_AS_TIMESTAMPS)
             .build();
