@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.common.ContentTypes.APPLICATION_JSON;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 public interface UserApi extends AutoCloseable {
@@ -24,5 +25,8 @@ public interface UserApi extends AutoCloseable {
      * @return A {@link CompletableFuture} with the user
      */
     CompletableFuture<User> getUser();
+
+    @Override
+    void close() throws IOException;
 
 }

@@ -127,7 +127,7 @@ public abstract class AbstractVertxHttpClient extends AbstractHttpClient impleme
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         client.close();
     }
 

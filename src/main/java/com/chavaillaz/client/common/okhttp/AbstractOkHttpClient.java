@@ -141,7 +141,7 @@ public abstract class AbstractOkHttpClient extends AbstractHttpClient implements
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         // OkHttp client does not need to be closed
     }
 
