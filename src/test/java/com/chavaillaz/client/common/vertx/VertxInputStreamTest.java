@@ -55,6 +55,16 @@ class VertxInputStreamTest {
     }
 
     @Test
+    @DisplayName("Reads the buffer byte by byte, then the end of the stream")
+    void testReadByteByByte() throws IOException {
+        try (VertxInputStream inputStream = new VertxInputStream(Buffer.buffer(new byte[]{(byte) 0xFF, 'A'}))) {
+            assertThat(inputStream.read()).isEqualTo(0xFF);
+            assertThat(inputStream.read()).isEqualTo('A');
+            assertThat(inputStream.read()).isEqualTo(-1);
+        }
+    }
+
+    @Test
     @DisplayName("Reads nothing when asked for no byte")
     void testReadNoByte() throws IOException {
         try (VertxInputStream inputStream = new VertxInputStream(buffer("Test"))) {

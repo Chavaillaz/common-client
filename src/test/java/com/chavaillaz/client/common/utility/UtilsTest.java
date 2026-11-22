@@ -4,9 +4,11 @@ import static com.chavaillaz.client.common.utility.Utils.encodeBase64;
 import static com.chavaillaz.client.common.utility.Utils.encodeQuery;
 import static com.chavaillaz.client.common.utility.Utils.getCookieHeader;
 import static com.chavaillaz.client.common.utility.Utils.getProperty;
+import static com.chavaillaz.client.common.utility.Utils.logAsynchronousException;
 import static com.chavaillaz.client.common.utility.Utils.readInputStream;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -78,6 +80,13 @@ class UtilsTest {
         assertThat(getProperty("Unknown")).isNull();
         assertThat(getProperty("Test")).isEqualTo("Value");
         assertThat(getProperty("Unknown", "Value")).isEqualTo("Value");
+    }
+
+    @Test
+    @DisplayName("Logs the result of a future, or its failure, without failing itself")
+    void testLogAsynchronousException() {
+        assertThatNoException().isThrownBy(() -> logAsynchronousException("Result", null));
+        assertThatNoException().isThrownBy(() -> logAsynchronousException(null, new IllegalStateException("Failure")));
     }
 
 }

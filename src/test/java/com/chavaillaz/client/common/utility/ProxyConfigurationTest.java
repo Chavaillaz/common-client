@@ -29,6 +29,14 @@ class ProxyConfigurationTest {
     }
 
     @Test
+    @DisplayName("Creates no configuration without a host or a port")
+    void testFromMissingHostOrPort() {
+        assertThat(ProxyConfiguration.from(null, 8443)).isNull();
+        assertThat(ProxyConfiguration.from(" ", 8443)).isNull();
+        assertThat(ProxyConfiguration.from("proxy.mycompany.com", null)).isNull();
+    }
+
+    @Test
     @DisplayName("Builds the URL of a scheme, a host and a port")
     void testFromSchemeAndHostAndPort() {
         ProxyConfiguration proxy = ProxyConfiguration.from("https", "proxy.mycompany.com", 8443);
