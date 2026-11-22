@@ -14,7 +14,7 @@
 
 ![Quality Gate](https://github.com/chavaillaz/common-client/actions/workflows/code-quality.yml/badge.svg)
 ![Dependency Check](https://github.com/chavaillaz/common-client/actions/workflows/dependency-check.yml/badge.svg)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.chavaillaz/common-client/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.chavaillaz/common-client)
+[![Maven Central](https://maven-badges.sml.io/sonatype-central/com.chavaillaz/common-client/badge.svg?subject=Maven%20Central&color=blue)](https://maven-badges.sml.io/sonatype-central/com.chavaillaz/common-client)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 This library helps you to easily create other libraries interacting with services using asynchronous requests and
