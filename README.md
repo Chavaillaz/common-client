@@ -48,6 +48,11 @@ The dependency is available in maven central (see badge for version):
 </dependency>
 ```
 
+The library is annotated with [JSpecify](https://jspecify.dev): every package is `@NullMarked`, meaning every
+parameter, return type and field is non-null unless marked `@Nullable`, such as the content a client deserializes
+from a response without body, so that static analysis tools (IDE inspections, NullAway, the Checker Framework, ...)
+can catch null-safety issues in the code built on it.
+
 ## Usage
 
 - Create the interfaces corresponding to every API you want to interact with (e.g. `UserApi`)
