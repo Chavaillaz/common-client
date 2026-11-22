@@ -12,9 +12,10 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+import com.fasterxml.jackson.databind.JavaType;
+
 import com.chavaillaz.client.common.AbstractHttpClient;
 import com.chavaillaz.client.common.security.Authentication;
-import com.fasterxml.jackson.databind.JavaType;
 
 /**
  * Abstract class implementing common parts for Java HTTP.

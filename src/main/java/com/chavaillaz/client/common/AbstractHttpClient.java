@@ -11,16 +11,17 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Map;
 
-import com.chavaillaz.client.common.exception.DeserializationException;
-import com.chavaillaz.client.common.exception.ResponseException;
-import com.chavaillaz.client.common.exception.SerializationException;
-import com.chavaillaz.client.common.security.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+
+import com.chavaillaz.client.common.exception.DeserializationException;
+import com.chavaillaz.client.common.exception.ResponseException;
+import com.chavaillaz.client.common.exception.SerializationException;
+import com.chavaillaz.client.common.security.Authentication;
 
 /**
  * Abstract class implementing common parts for all clients.

@@ -2,14 +2,15 @@ package com.chavaillaz.client.common.apache;
 
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.common.AbstractHttpClient;
-import com.chavaillaz.client.common.exception.RequestException;
-import com.chavaillaz.client.common.exception.ResponseException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
 import org.apache.hc.core5.concurrent.FutureCallback;
+
+import com.chavaillaz.client.common.AbstractHttpClient;
+import com.chavaillaz.client.common.exception.RequestException;
+import com.chavaillaz.client.common.exception.ResponseException;
 
 /**
  * Future callback for Apache HTTP Client in order to transfer state to a {@link CompletableFuture}.

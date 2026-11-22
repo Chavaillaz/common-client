@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import com.chavaillaz.client.common.utility.ProxyConfiguration;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.apache.hc.client5.http.config.ConnectionConfig;
@@ -23,6 +22,8 @@ import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.apache.hc.core5.util.Timeout;
+
+import com.chavaillaz.client.common.utility.ProxyConfiguration;
 
 /**
  * Utilities for Apache HTTP Client.

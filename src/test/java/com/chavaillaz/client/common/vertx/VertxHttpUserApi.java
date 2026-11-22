@@ -4,10 +4,11 @@ import static io.vertx.core.http.HttpMethod.GET;
 
 import java.util.concurrent.CompletableFuture;
 
+import io.vertx.ext.web.client.WebClient;
+
 import com.chavaillaz.client.common.model.User;
 import com.chavaillaz.client.common.model.UserApi;
 import com.chavaillaz.client.common.security.Authentication;
-import io.vertx.ext.web.client.WebClient;
 
 public class VertxHttpUserApi extends AbstractVertxHttpClient implements UserApi {
 

@@ -4,10 +4,11 @@ import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.get;
 
 import java.util.concurrent.CompletableFuture;
 
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
+
 import com.chavaillaz.client.common.model.User;
 import com.chavaillaz.client.common.model.UserApi;
 import com.chavaillaz.client.common.security.Authentication;
-import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 
 public class ApacheHttpUserApi extends AbstractApacheHttpClient implements UserApi {
 

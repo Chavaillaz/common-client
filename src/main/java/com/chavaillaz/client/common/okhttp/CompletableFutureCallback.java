@@ -5,14 +5,15 @@ import static com.chavaillaz.client.common.okhttp.OkHttpUtils.getBodyOrError;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.common.AbstractHttpClient;
-import com.chavaillaz.client.common.exception.RequestException;
-import com.chavaillaz.client.common.exception.ResponseException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+
+import com.chavaillaz.client.common.AbstractHttpClient;
+import com.chavaillaz.client.common.exception.RequestException;
+import com.chavaillaz.client.common.exception.ResponseException;
 
 /**
  * Callback for OkHttp Client in order to transfer state to a {@link CompletableFuture}.

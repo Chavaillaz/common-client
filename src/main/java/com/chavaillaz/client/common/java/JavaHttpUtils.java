@@ -17,10 +17,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.chavaillaz.client.common.utility.ProxyConfiguration;
-import com.chavaillaz.client.common.utility.Utils;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.tuple.Pair;
+
+import com.chavaillaz.client.common.utility.ProxyConfiguration;
+import com.chavaillaz.client.common.utility.Utils;
 
 /**
  * Utilities for Java HTTP Client.

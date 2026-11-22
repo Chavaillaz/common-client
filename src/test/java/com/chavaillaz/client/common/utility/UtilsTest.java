@@ -18,8 +18,9 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
 
-import com.chavaillaz.client.common.security.Authentication;
 import org.junit.jupiter.api.Test;
+
+import com.chavaillaz.client.common.security.Authentication;
 
 class UtilsTest {
 

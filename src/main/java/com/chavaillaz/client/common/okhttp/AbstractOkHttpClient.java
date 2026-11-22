@@ -6,8 +6,6 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.common.AbstractHttpClient;
-import com.chavaillaz.client.common.security.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 import lombok.SneakyThrows;
 import okhttp3.MediaType;
@@ -16,6 +14,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+
+import com.chavaillaz.client.common.AbstractHttpClient;
+import com.chavaillaz.client.common.security.Authentication;
 
 /**
  * Abstract class implementing common parts for OkHttp.

@@ -18,11 +18,12 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-import com.chavaillaz.client.common.exception.AsynchronousException;
-import com.chavaillaz.client.common.security.Authentication;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
+
+import com.chavaillaz.client.common.exception.AsynchronousException;
+import com.chavaillaz.client.common.security.Authentication;
 
 /**
  * General utilities for all clients.

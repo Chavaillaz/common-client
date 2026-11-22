@@ -12,7 +12,6 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
 
-import com.chavaillaz.client.common.utility.ProxyConfiguration;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import okhttp3.MediaType;
@@ -21,6 +20,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+
+import com.chavaillaz.client.common.utility.ProxyConfiguration;
 
 /**
  * Utilities for OkHttp Client.

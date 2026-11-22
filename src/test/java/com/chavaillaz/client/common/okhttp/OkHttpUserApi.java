@@ -2,10 +2,11 @@ package com.chavaillaz.client.common.okhttp;
 
 import java.util.concurrent.CompletableFuture;
 
+import okhttp3.OkHttpClient;
+
 import com.chavaillaz.client.common.model.User;
 import com.chavaillaz.client.common.model.UserApi;
 import com.chavaillaz.client.common.security.Authentication;
-import okhttp3.OkHttpClient;
 
 public class OkHttpUserApi extends AbstractOkHttpClient implements UserApi {
 

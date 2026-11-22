@@ -5,8 +5,6 @@ import static com.chavaillaz.client.common.utility.Utils.getCookieHeader;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.common.AbstractHttpClient;
-import com.chavaillaz.client.common.security.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
@@ -14,6 +12,9 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
+
+import com.chavaillaz.client.common.AbstractHttpClient;
+import com.chavaillaz.client.common.security.Authentication;
 
 /**
  * Abstract class implementing common parts for Vert.x HTTP.

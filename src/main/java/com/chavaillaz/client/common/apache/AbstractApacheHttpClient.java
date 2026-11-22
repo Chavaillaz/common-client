@@ -9,8 +9,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.common.AbstractHttpClient;
-import com.chavaillaz.client.common.security.Authentication;
 import com.fasterxml.jackson.databind.JavaType;
 import lombok.SneakyThrows;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
@@ -24,6 +22,9 @@ import org.apache.hc.client5.http.impl.cookie.BasicClientCookie;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.protocol.HttpContext;
+
+import com.chavaillaz.client.common.AbstractHttpClient;
+import com.chavaillaz.client.common.security.Authentication;
 
 /**
  * Abstract class implementing common parts for Apache HTTP.

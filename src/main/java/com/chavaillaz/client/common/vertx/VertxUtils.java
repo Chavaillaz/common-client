@@ -6,13 +6,14 @@ import java.io.File;
 import java.util.Map;
 import java.util.Optional;
 
-import com.chavaillaz.client.common.utility.ProxyConfiguration;
 import io.vertx.core.MultiMap;
 import io.vertx.core.net.ProxyOptions;
 import io.vertx.ext.web.client.WebClientOptions;
 import io.vertx.ext.web.multipart.MultipartForm;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+
+import com.chavaillaz.client.common.utility.ProxyConfiguration;
 
 /**
  * Utilities for Vert.x Client.
