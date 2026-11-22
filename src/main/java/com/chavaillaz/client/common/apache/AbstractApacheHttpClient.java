@@ -1,6 +1,5 @@
 package com.chavaillaz.client.common.apache;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.hc.client5.http.protocol.HttpClientContext.COOKIE_STORE;
 import static org.apache.hc.core5.http.ContentType.MULTIPART_FORM_DATA;
 
@@ -11,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.databind.JavaType;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
 import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
@@ -124,7 +124,7 @@ public abstract class AbstractApacheHttpClient extends AbstractHttpClient implem
     @SneakyThrows
     protected <T> CompletableFuture<T> sendAsync(SimpleRequestBuilder requestBuilder, MultipartEntityBuilder multipartBuilder, Class<T> returnType) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        String boundary = randomAlphanumeric(16);
+        String boundary = RandomStringUtils.insecure().nextAlphanumeric(16);
         multipartBuilder.setBoundary(boundary);
         try (HttpEntity entity = multipartBuilder.build()) {
             entity.writeTo(outputStream);
