@@ -1,9 +1,6 @@
 package com.chavaillaz.client.common.utility;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
 
@@ -18,31 +15,29 @@ class LazyCachedObjectTest {
         LazyCachedObject<String> cachedObject = new LazyCachedObject<>(() -> VALUE);
 
         Optional<String> firstCall = cachedObject.get();
-        assertTrue(firstCall.isPresent());
-        assertEquals(VALUE, firstCall.get());
+        assertThat(firstCall).contains(VALUE);
 
         Optional<String> secondCall = cachedObject.get();
-        assertTrue(secondCall.isPresent());
-        assertEquals(VALUE, secondCall.get());
+        assertThat(secondCall).contains(VALUE);
 
         // Check that the same object has been used
-        assertSame(firstCall.get(), secondCall.get());
+        assertThat(secondCall).containsSame(firstCall.orElseThrow());
     }
 
     @Test
     void testWithParameterAtGet() {
         LazyCachedObject<String> cachedObject = new LazyCachedObject<>();
-        assertFalse(cachedObject.get().isPresent());
+        assertThat(cachedObject.get()).isEmpty();
 
         String firstCall = cachedObject.get(() -> VALUE);
-        assertEquals(VALUE, firstCall);
+        assertThat(firstCall).isEqualTo(VALUE);
 
         // Give on purpose a new string instance in parameter
         String secondCall = cachedObject.get(() -> "Test");
-        assertEquals(VALUE, secondCall);
+        assertThat(secondCall).isEqualTo(VALUE);
 
         // Check that the same object has been used
-        assertSame(firstCall, secondCall);
+        assertThat(secondCall).isSameAs(firstCall);
     }
 
 }

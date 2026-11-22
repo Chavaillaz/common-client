@@ -6,9 +6,7 @@ import static com.chavaillaz.client.common.utility.Utils.getCookieHeader;
 import static com.chavaillaz.client.common.utility.Utils.getProperty;
 import static com.chavaillaz.client.common.utility.Utils.readInputStream;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -29,7 +27,7 @@ class UtilsTest {
         String expected = "Test";
         InputStream stream = new ByteArrayInputStream(expected.getBytes(UTF_8));
         String result = readInputStream(stream);
-        assertEquals(expected, result);
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
@@ -38,12 +36,12 @@ class UtilsTest {
         map.put("A", 1);
         map.put("B", 2);
         map.put("C", 3);
-        assertEquals("A=1&B=2&C=3", encodeQuery(map));
+        assertThat(encodeQuery(map)).isEqualTo("A=1&B=2&C=3");
     }
 
     @Test
     void testEncodeBase64() {
-        assertEquals("VGVzdA==", encodeBase64("Test"));
+        assertThat(encodeBase64("Test")).isEqualTo("VGVzdA==");
     }
 
     @Test
@@ -64,16 +62,15 @@ class UtilsTest {
         };
 
         Optional<String> cookieHeader = getCookieHeader(authentication);
-        assertTrue(cookieHeader.isPresent());
-        assertEquals("FirstKey=FirstValue; SecondKey=SecondValue", cookieHeader.get());
+        assertThat(cookieHeader).contains("FirstKey=FirstValue; SecondKey=SecondValue");
     }
 
     @Test
     void testProperty() {
         System.setProperty("Test", "Value");
-        assertNull(getProperty("Unknown"));
-        assertEquals("Value", getProperty("Test"));
-        assertEquals("Value", getProperty("Unknown", "Value"));
+        assertThat(getProperty("Unknown")).isNull();
+        assertThat(getProperty("Test")).isEqualTo("Value");
+        assertThat(getProperty("Unknown", "Value")).isEqualTo("Value");
     }
 
 }

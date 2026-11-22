@@ -1,8 +1,7 @@
 package com.chavaillaz.client.common.security;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,19 +13,15 @@ class TokenAuthenticationTest {
     @Test
     void testTokenAuthentication() {
         TokenAuthentication authentication = new TokenAuthentication("Token");
-        assertEquals("Token", authentication.getToken());
+        assertThat(authentication.getToken()).isEqualTo("Token");
 
         Map<String, String> headers = new HashMap<>();
         authentication.fillHeaders(headers::put);
-        assertEquals(1, headers.size());
-
-        String authorization = headers.get("Authorization");
-        assertNotNull(authorization);
-        assertEquals("Bearer Token", authorization);
+        assertThat(headers).containsOnly(entry("Authorization", "Bearer Token"));
 
         Map<String, String> cookies = new HashMap<>();
         authentication.fillCookies(cookies::put);
-        assertTrue(cookies.isEmpty());
+        assertThat(cookies).isEmpty();
     }
 
 }

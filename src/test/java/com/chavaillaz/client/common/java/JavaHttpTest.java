@@ -2,8 +2,7 @@ package com.chavaillaz.client.common.java;
 
 import static com.chavaillaz.client.common.java.JavaHttpUtils.defaultHttpClientBuilder;
 import static com.chavaillaz.client.common.model.UserApi.stubForUserApi;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.http.HttpClient;
 
@@ -28,8 +27,8 @@ class JavaHttpTest {
         HttpClient client = defaultHttpClientBuilder(null).build();
         try (var api = new JavaHttpUserApi(client, wiremock.getHttpBaseUrl(), new AnonymousAuthentication())) {
             User user = api.getUser().join();
-            assertNotNull(user);
-            assertEquals("WireMock", user.getUsername());
+            assertThat(user).isNotNull();
+            assertThat(user.getUsername()).isEqualTo("WireMock");
         }
     }
 

@@ -1,7 +1,6 @@
 package com.chavaillaz.client.common.exception;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -14,9 +13,9 @@ class DeserializationExceptionTest {
         Exception root = new Exception("Root");
         Exception exception = new DeserializationException("Content", String.class, root);
 
-        assertTrue(exception.getMessage().contains("Content"));
-        assertTrue(exception.getMessage().contains("String"));
-        assertEquals(root, exception.getCause());
+        assertThat(exception)
+                .hasMessageContainingAll("Content", "String")
+                .cause().isSameAs(root);
     }
 
     @Test
@@ -26,9 +25,9 @@ class DeserializationExceptionTest {
         Exception root = new Exception("Root");
         Exception exception = new DeserializationException("Content", type, root);
 
-        assertTrue(exception.getMessage().contains("Content"));
-        assertTrue(exception.getMessage().contains("String"));
-        assertEquals(root, exception.getCause());
+        assertThat(exception)
+                .hasMessageContainingAll("Content", "String")
+                .cause().isSameAs(root);
     }
 
 }

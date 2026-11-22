@@ -1,7 +1,6 @@
 package com.chavaillaz.client.common.exception;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,9 +11,9 @@ class SerializationExceptionTest {
         Exception root = new Exception("Root");
         Exception exception = new SerializationException("Content", root);
 
-        assertTrue(exception.getMessage().contains("Content"));
-        assertTrue(exception.getMessage().contains("String"));
-        assertEquals(root, exception.getCause());
+        assertThat(exception)
+                .hasMessageContainingAll("Content", "String")
+                .cause().isSameAs(root);
     }
 
 }

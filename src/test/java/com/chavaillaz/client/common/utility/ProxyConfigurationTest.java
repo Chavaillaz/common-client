@@ -1,8 +1,6 @@
 package com.chavaillaz.client.common.utility;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,37 +11,37 @@ class ProxyConfigurationTest {
     @Test
     void testFromUrl() {
         ProxyConfiguration proxy = ProxyConfiguration.from(URL);
-        assertNotNull(proxy);
-        assertEquals(URL, proxy.getUrl());
-        assertEquals("https", proxy.getScheme());
-        assertEquals("proxy.mycompany.com", proxy.getHost());
-        assertEquals(8443, proxy.getPort());
+        assertThat(proxy).isNotNull();
+        assertThat(proxy.getUrl()).isEqualTo(URL);
+        assertThat(proxy.getScheme()).isEqualTo("https");
+        assertThat(proxy.getHost()).isEqualTo("proxy.mycompany.com");
+        assertThat(proxy.getPort()).isEqualTo(8443);
     }
 
     @Test
     void testFromWrongUrl() {
         ProxyConfiguration proxy = ProxyConfiguration.from("Not an URL");
-        assertNull(proxy);
+        assertThat(proxy).isNull();
     }
 
     @Test
     void testFromSchemeAndHostAndPort() {
         ProxyConfiguration proxy = ProxyConfiguration.from("https", "proxy.mycompany.com", 8443);
-        assertNotNull(proxy);
-        assertEquals(URL, proxy.getUrl());
-        assertEquals("https", proxy.getScheme());
-        assertEquals("proxy.mycompany.com", proxy.getHost());
-        assertEquals(8443, proxy.getPort());
+        assertThat(proxy).isNotNull();
+        assertThat(proxy.getUrl()).isEqualTo(URL);
+        assertThat(proxy.getScheme()).isEqualTo("https");
+        assertThat(proxy.getHost()).isEqualTo("proxy.mycompany.com");
+        assertThat(proxy.getPort()).isEqualTo(8443);
     }
 
     @Test
     void testFromHostAndPort() {
         ProxyConfiguration proxy = ProxyConfiguration.from("proxy.mycompany.com", 8443);
-        assertNotNull(proxy);
-        assertEquals("proxy.mycompany.com:8443", proxy.getUrl());
-        assertNull(proxy.getScheme());
-        assertEquals("proxy.mycompany.com", proxy.getHost());
-        assertEquals(8443, proxy.getPort());
+        assertThat(proxy).isNotNull();
+        assertThat(proxy.getUrl()).isEqualTo("proxy.mycompany.com:8443");
+        assertThat(proxy.getScheme()).isNull();
+        assertThat(proxy.getHost()).isEqualTo("proxy.mycompany.com");
+        assertThat(proxy.getPort()).isEqualTo(8443);
     }
 
 }

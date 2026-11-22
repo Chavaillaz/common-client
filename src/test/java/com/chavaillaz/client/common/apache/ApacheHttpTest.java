@@ -8,8 +8,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.common.ContentTypes.APPLICATION_JSON;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.function.BiConsumer;
 
@@ -36,8 +35,8 @@ class ApacheHttpTest {
         CloseableHttpAsyncClient client = defaultHttpClientBuilder(null).build();
         try (var api = new ApacheHttpUserApi(client, wiremock.getHttpBaseUrl(), new AnonymousAuthentication())) {
             User user = api.getUser().join();
-            assertNotNull(user);
-            assertEquals("WireMock", user.getUsername());
+            assertThat(user).isNotNull();
+            assertThat(user.getUsername()).isEqualTo("WireMock");
         }
     }
 
@@ -63,7 +62,7 @@ class ApacheHttpTest {
             User user = api.getUser().join();
 
             // Then: the request carried the cookie
-            assertEquals("Cookie", user.getUsername());
+            assertThat(user.getUsername()).isEqualTo("Cookie");
         }
     }
 

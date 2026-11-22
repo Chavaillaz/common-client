@@ -2,7 +2,7 @@ package com.chavaillaz.client.common.vertx;
 
 import static com.chavaillaz.client.common.utility.Utils.readInputStream;
 import static io.vertx.core.buffer.Buffer.buffer;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ class VertxInputStreamTest {
 
         try (VertxInputStream inputStream = new VertxInputStream(buffer)) {
             String result = readInputStream(inputStream);
-            assertEquals(expected, result);
+            assertThat(result).isEqualTo(expected);
         }
     }
 

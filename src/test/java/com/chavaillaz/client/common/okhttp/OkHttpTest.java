@@ -2,8 +2,7 @@ package com.chavaillaz.client.common.okhttp;
 
 import static com.chavaillaz.client.common.model.UserApi.stubForUserApi;
 import static com.chavaillaz.client.common.okhttp.OkHttpUtils.defaultHttpClientBuilder;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
@@ -27,8 +26,8 @@ class OkHttpTest {
         OkHttpClient client = defaultHttpClientBuilder(null).build();
         try (var api = new OkHttpUserApi(client, wiremock.getHttpBaseUrl(), new AnonymousAuthentication())) {
             User user = api.getUser().join();
-            assertNotNull(user);
-            assertEquals("WireMock", user.getUsername());
+            assertThat(user).isNotNull();
+            assertThat(user.getUsername()).isEqualTo("WireMock");
         }
     }
 

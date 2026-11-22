@@ -2,8 +2,7 @@ package com.chavaillaz.client.common.vertx;
 
 import static com.chavaillaz.client.common.model.UserApi.stubForUserApi;
 import static com.chavaillaz.client.common.vertx.VertxUtils.defaultWebClientOptions;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
@@ -28,8 +27,8 @@ class VertxHttpTest {
         WebClient client = WebClient.create(Vertx.vertx(), defaultWebClientOptions(null));
         try (var api = new VertxHttpUserApi(client, wiremock.getHttpBaseUrl(), new AnonymousAuthentication())) {
             User user = api.getUser().join();
-            assertNotNull(user);
-            assertEquals("WireMock", user.getUsername());
+            assertThat(user).isNotNull();
+            assertThat(user.getUsername()).isEqualTo("WireMock");
         }
     }
 
