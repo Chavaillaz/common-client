@@ -40,6 +40,7 @@
         <!-- The date every entry of the archives carries, so that a commit builds the same bytes wherever it is
              built. The release script sets it along with the version, through versions:set -->
         <project.build.outputTimestamp>2026-11-23T00:00:00Z</project.build.outputTimestamp>
+        <maven.compiler.failOnWarning>true</maven.compiler.failOnWarning>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <lombok.version>1.18.42</lombok.version>
     </properties>
@@ -250,6 +251,7 @@
                 <version>3.14.1</version>
                 <configuration>
                     <release>17</release>
+                    <showWarnings>true</showWarnings>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -258,6 +260,24 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <configuration>
+                            <compilerArgs>
+                                <arg>-Xlint:all,-processing,-classfile</arg>
+                            </compilerArgs>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>default-testCompile</id>
+                        <configuration>
+                            <compilerArgs>
+                                <arg>-Xlint:all,-processing,-classfile</arg>
+                            </compilerArgs>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
