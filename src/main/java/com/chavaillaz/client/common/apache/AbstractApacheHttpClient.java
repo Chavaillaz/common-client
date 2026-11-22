@@ -1,11 +1,11 @@
 package com.chavaillaz.client.common.apache;
 
-import static org.apache.hc.client5.http.protocol.HttpClientContext.COOKIE_STORE;
 import static org.apache.hc.core5.http.ContentType.MULTIPART_FORM_DATA;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.databind.JavaType;
@@ -140,10 +140,10 @@ public abstract class AbstractApacheHttpClient extends AbstractHttpClient implem
      * @return The corresponding context
      */
     protected HttpContext createContext() {
-        HttpContext localContext = HttpClientContext.create();
+        HttpClientContext localContext = HttpClientContext.create();
         BasicCookieStore cookieStore = new BasicCookieStore();
         getAuthentication().fillCookies((key, value) -> addCookie(cookieStore, key, value));
-        localContext.setAttribute(COOKIE_STORE, cookieStore);
+        localContext.setCookieStore(cookieStore);
         return localContext;
     }
 
@@ -156,7 +156,7 @@ public abstract class AbstractApacheHttpClient extends AbstractHttpClient implem
      */
     protected void addCookie(CookieStore store, String key, String value) {
         BasicClientCookie cookie = new BasicClientCookie(key, value);
-        cookie.setDomain(getBaseUrl());
+        cookie.setDomain(URI.create(getBaseUrl()).getHost());
         cookie.setPath("/");
         store.addCookie(cookie);
     }
