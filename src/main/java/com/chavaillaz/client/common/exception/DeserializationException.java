@@ -1,5 +1,6 @@
 package com.chavaillaz.client.common.exception;
 
+import java.io.Serial;
 import java.text.MessageFormat;
 
 import com.fasterxml.jackson.databind.JavaType;
@@ -8,6 +9,9 @@ import com.fasterxml.jackson.databind.JavaType;
  * Exception in case the body received by the client cannot be deserialized.
  */
 public class DeserializationException extends ClientException {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new deserialization exception.

@@ -1,9 +1,14 @@
 package com.chavaillaz.client.common.exception;
 
+import java.io.Serial;
+
 /**
  * General exception in case something fails in the client.
  */
 public class ClientException extends RuntimeException {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new generic client exception.

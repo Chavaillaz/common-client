@@ -2,6 +2,8 @@ package com.chavaillaz.client.common.exception;
 
 import static org.apache.commons.lang3.StringUtils.SPACE;
 
+import java.io.Serial;
+
 import lombok.Getter;
 
 /**
@@ -9,6 +11,9 @@ import lombok.Getter;
  */
 @Getter
 public class ResponseException extends ClientException {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final Integer statusCode;
     private final String body;

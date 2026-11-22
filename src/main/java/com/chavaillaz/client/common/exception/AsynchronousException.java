@@ -1,11 +1,16 @@
 package com.chavaillaz.client.common.exception;
 
+import java.io.Serial;
+
 /**
  * Exception in case an error occurs during an asynchronous processing
  * when chaining actions in a {@link java.util.concurrent.CompletableFuture}
  * without waiting the result of it.
  */
 public class AsynchronousException extends RuntimeException {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new asynchronous exception.

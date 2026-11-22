@@ -2,10 +2,15 @@ package com.chavaillaz.client.common.exception;
 
 import static org.apache.commons.lang3.StringUtils.SPACE;
 
+import java.io.Serial;
+
 /**
  * Exception in case the request fails before getting a response from the server.
  */
 public class RequestException extends ClientException {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new request exception.

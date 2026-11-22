@@ -1,9 +1,14 @@
 package com.chavaillaz.client.common.exception;
 
+import java.io.Serial;
+
 /**
  * Exception in case the body to be sent by the client cannot be serialized.
  */
 public class SerializationException extends ClientException {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new serialization exception.
