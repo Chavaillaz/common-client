@@ -2,6 +2,7 @@ package com.chavaillaz.client.common.vertx;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 import io.vertx.core.buffer.Buffer;
 
@@ -32,7 +33,11 @@ public class VertxInputStream extends InputStream {
 
     @Override
     public int read(byte[] buffer, int offset, int length) throws IOException {
-        int size = Math.min(buffer.length, this.buffer.length() - position);
+        Objects.checkFromIndexSize(offset, length, buffer.length);
+        if (length == 0) {
+            return 0;
+        }
+        int size = Math.min(length, this.buffer.length() - position);
         if (size == 0) {
             return -1;
         }
