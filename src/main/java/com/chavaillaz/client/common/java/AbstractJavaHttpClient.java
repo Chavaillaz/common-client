@@ -13,6 +13,7 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.databind.JavaType;
+import org.jspecify.annotations.Nullable;
 
 import com.chavaillaz.client.common.AbstractHttpClient;
 import com.chavaillaz.client.common.security.Authentication;
@@ -89,7 +90,7 @@ public abstract class AbstractJavaHttpClient extends AbstractHttpClient implemen
      * @param <T>            The content type
      * @return A {@link CompletableFuture} with the deserialized response body
      */
-    protected <T> CompletableFuture<T> sendAsync(HttpRequest.Builder requestBuilder, Class<T> returnType) {
+    protected <T> CompletableFuture<@Nullable T> sendAsync(HttpRequest.Builder requestBuilder, Class<T> returnType) {
         return sendAsync(requestBuilder, objectMapper.constructType(returnType));
     }
 
@@ -101,7 +102,7 @@ public abstract class AbstractJavaHttpClient extends AbstractHttpClient implemen
      * @param <T>            The content type
      * @return A {@link CompletableFuture} with the deserialized response body
      */
-    protected <T> CompletableFuture<T> sendAsync(HttpRequest.Builder requestBuilder, JavaType returnType) {
+    protected <T> CompletableFuture<@Nullable T> sendAsync(HttpRequest.Builder requestBuilder, JavaType returnType) {
         return client.sendAsync(requestBuilder.build(), BodyHandlers.ofString())
                 .thenApply(this::checkResponse)
                 .thenApply(response -> deserialize(response.body(), returnType));

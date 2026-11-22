@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 
 import com.chavaillaz.client.common.exception.DeserializationException;
 import com.chavaillaz.client.common.exception.ResponseException;
@@ -118,9 +119,9 @@ public abstract class AbstractHttpClient {
      * @param content The object to deserialize
      * @param type    The object class type
      * @param <T>     The object type
-     * @return The object instance of the given type
+     * @return The object instance of the given type, or {@code null} for a blank content or the {@link Void} type
      */
-    public <T> T deserialize(String content, Class<T> type) {
+    public <T> @Nullable T deserialize(@Nullable String content, Class<T> type) {
         return deserialize(content, objectMapper.constructType(type));
     }
 
@@ -130,9 +131,9 @@ public abstract class AbstractHttpClient {
      * @param content The object to deserialize
      * @param type    The object class type
      * @param <T>     The object type
-     * @return The object instance of the given type
+     * @return The object instance of the given type, or {@code null} for a blank content or the {@link Void} type
      */
-    public <T> T deserialize(String content, JavaType type) {
+    public <T> @Nullable T deserialize(@Nullable String content, JavaType type) {
         if (type.getRawClass() == Void.class || isBlank(content)) {
             return null;
         }
@@ -169,7 +170,7 @@ public abstract class AbstractHttpClient {
      * @param body The content body
      * @return The response exception
      */
-    public ResponseException responseException(int code, String body) {
+    public ResponseException responseException(int code, @Nullable String body) {
         return new ResponseException(code, body);
     }
 
@@ -183,7 +184,7 @@ public abstract class AbstractHttpClient {
      * @param body   The content body
      * @return The response exception
      */
-    public ResponseException responseException(String method, String url, int code, String body) {
+    public ResponseException responseException(String method, String url, int code, @Nullable String body) {
         return new ResponseException(method, url, code, body);
     }
 

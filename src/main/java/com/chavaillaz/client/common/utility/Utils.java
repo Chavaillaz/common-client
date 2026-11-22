@@ -20,6 +20,7 @@ import java.util.function.BiConsumer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jspecify.annotations.Nullable;
 
 import com.chavaillaz.client.common.exception.AsynchronousException;
 import com.chavaillaz.client.common.security.Authentication;
@@ -132,7 +133,7 @@ public final class Utils {
      * @param propertyKey The property key to search
      * @return The property value found (environment, system) or {@code null}
      */
-    public static String getProperty(String propertyKey) {
+    public static @Nullable String getProperty(String propertyKey) {
         return getProperty(propertyKey, null);
     }
 
@@ -144,7 +145,7 @@ public final class Utils {
      * @param defaultValue The default value to use if no property was found
      * @return The property value found (environment, system) or the default given value
      */
-    public static String getProperty(String propertyKey, String defaultValue) {
+    public static @Nullable String getProperty(String propertyKey, @Nullable String defaultValue) {
         return ofNullable(System.getenv(propertyKey))
                 .or(() -> ofNullable(System.getProperty(propertyKey)))
                 .orElse(defaultValue);
@@ -157,7 +158,7 @@ public final class Utils {
      * @param result    The result returned by the {@link CompletableFuture}
      * @param throwable The exception thrown by the {@link CompletableFuture}
      */
-    public static void logAsynchronousException(Object result, Throwable throwable) {
+    public static void logAsynchronousException(@Nullable Object result, @Nullable Throwable throwable) {
         if (throwable != null) {
             log.error("Asynchronous execution failed: {}", throwable.getMessage(), new AsynchronousException(throwable));
         } else {

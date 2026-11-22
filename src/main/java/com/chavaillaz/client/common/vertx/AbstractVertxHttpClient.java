@@ -12,6 +12,7 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
+import org.jspecify.annotations.Nullable;
 
 import com.chavaillaz.client.common.AbstractHttpClient;
 import com.chavaillaz.client.common.security.Authentication;
@@ -69,7 +70,7 @@ public abstract class AbstractVertxHttpClient extends AbstractHttpClient impleme
      * @param <T>        The domain object type
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
-    protected <T> CompletableFuture<T> handleAsync(Future<HttpResponse<Buffer>> future, Class<T> returnType) {
+    protected <T> CompletableFuture<@Nullable T> handleAsync(Future<HttpResponse<Buffer>> future, Class<T> returnType) {
         return handleAsync(future, objectMapper.constructType(returnType));
     }
 
@@ -81,7 +82,7 @@ public abstract class AbstractVertxHttpClient extends AbstractHttpClient impleme
      * @param <T>        The domain object type
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
-    protected <T> CompletableFuture<T> handleAsync(Future<HttpResponse<Buffer>> future, JavaType returnType) {
+    protected <T> CompletableFuture<@Nullable T> handleAsync(Future<HttpResponse<Buffer>> future, JavaType returnType) {
         return handleAsyncBase(future)
                 .thenApply(HttpResponse::bodyAsString)
                 .thenApply(body -> deserialize(body, returnType));

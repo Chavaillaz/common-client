@@ -1,5 +1,7 @@
 package com.chavaillaz.client.common;
 
+import org.jspecify.annotations.Nullable;
+
 import com.chavaillaz.client.common.security.AnonymousAuthentication;
 import com.chavaillaz.client.common.security.Authentication;
 import com.chavaillaz.client.common.security.PasswordAuthentication;
@@ -16,7 +18,7 @@ public abstract class AbstractClient<C, I> implements Client<I> {
 
     protected final String baseUrl;
     protected Authentication authentication;
-    protected ProxyConfiguration proxy;
+    protected @Nullable ProxyConfiguration proxy;
 
     /**
      * Creates a new abstract client.

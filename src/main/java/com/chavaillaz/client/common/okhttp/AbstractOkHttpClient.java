@@ -14,6 +14,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.jspecify.annotations.Nullable;
 
 import com.chavaillaz.client.common.AbstractHttpClient;
 import com.chavaillaz.client.common.security.Authentication;
@@ -84,7 +85,7 @@ public abstract class AbstractOkHttpClient extends AbstractHttpClient implements
      * @param <T>            The domain object type
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
-    protected <T> CompletableFuture<T> sendAsync(Request.Builder requestBuilder, Class<T> returnType) {
+    protected <T> CompletableFuture<@Nullable T> sendAsync(Request.Builder requestBuilder, Class<T> returnType) {
         return sendAsync(requestBuilder, objectMapper.constructType(returnType));
     }
 
@@ -96,7 +97,7 @@ public abstract class AbstractOkHttpClient extends AbstractHttpClient implements
      * @param <T>            The domain object type
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
-    protected <T> CompletableFuture<T> sendAsync(Request.Builder requestBuilder, JavaType returnType) {
+    protected <T> CompletableFuture<@Nullable T> sendAsync(Request.Builder requestBuilder, JavaType returnType) {
         return sendAsyncBase(requestBuilder)
                 .thenApply(response -> handleResponse(response, returnType));
     }
@@ -134,7 +135,7 @@ public abstract class AbstractOkHttpClient extends AbstractHttpClient implements
      * @return The instance of the given type
      */
     @SneakyThrows
-    protected <T> T handleResponse(Response response, JavaType type) {
+    protected <T> @Nullable T handleResponse(Response response, JavaType type) {
         try (ResponseBody body = response.body()) {
             return body != null ? deserialize(body.string(), type) : null;
         }

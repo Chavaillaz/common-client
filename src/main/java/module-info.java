@@ -24,6 +24,7 @@ module com.chavaillaz.client.common {
     requires transitive com.fasterxml.jackson.databind;
     requires transitive java.net.http;
     requires transitive org.apache.commons.lang3;
+    requires transitive org.jspecify;
     requires com.fasterxml.jackson.datatype.jsr310;
     requires org.slf4j;
 

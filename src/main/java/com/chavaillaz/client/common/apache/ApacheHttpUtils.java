@@ -21,6 +21,7 @@ import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.apache.hc.core5.util.Timeout;
+import org.jspecify.annotations.Nullable;
 
 import com.chavaillaz.client.common.utility.ProxyConfiguration;
 
@@ -39,7 +40,7 @@ public final class ApacheHttpUtils {
      * @param proxy The proxy configuration
      * @return The corresponding client
      */
-    public static HttpAsyncClientBuilder defaultHttpClientBuilder(ProxyConfiguration proxy) {
+    public static HttpAsyncClientBuilder defaultHttpClientBuilder(@Nullable ProxyConfiguration proxy) {
         return HttpAsyncClientBuilder.create()
                 .useSystemProperties()
                 .setDefaultCookieStore(new BasicCookieStore())

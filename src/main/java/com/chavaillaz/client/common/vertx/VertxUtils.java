@@ -11,6 +11,7 @@ import io.vertx.core.net.ProxyOptions;
 import io.vertx.ext.web.client.WebClientOptions;
 import io.vertx.ext.web.multipart.MultipartForm;
 import lombok.SneakyThrows;
+import org.jspecify.annotations.Nullable;
 
 import com.chavaillaz.client.common.utility.ProxyConfiguration;
 
@@ -29,7 +30,7 @@ public final class VertxUtils {
      * @param proxy The proxy configuration
      * @return The corresponding options
      */
-    public static WebClientOptions defaultWebClientOptions(ProxyConfiguration proxy) {
+    public static WebClientOptions defaultWebClientOptions(@Nullable ProxyConfiguration proxy) {
         return new WebClientOptions()
                 .setProxyOptions(Optional.ofNullable(proxy)
                         .map(config -> new ProxyOptions()

@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Cached object that is lazily initialised (on demand).
@@ -14,10 +15,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LazyCachedObject<T> {
 
-    private T object;
+    private @Nullable T object;
 
     @Setter
-    private Supplier<T> supplier;
+    private @Nullable Supplier<T> supplier;
 
     /**
      * Creates a new lazy cached object.

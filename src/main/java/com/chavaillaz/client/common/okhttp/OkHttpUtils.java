@@ -19,6 +19,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.jspecify.annotations.Nullable;
 
 import com.chavaillaz.client.common.utility.ProxyConfiguration;
 
@@ -37,7 +38,7 @@ public final class OkHttpUtils {
      * @param proxy The proxy configuration
      * @return The corresponding client
      */
-    public static OkHttpClient.Builder defaultHttpClientBuilder(ProxyConfiguration proxy) {
+    public static OkHttpClient.Builder defaultHttpClientBuilder(@Nullable ProxyConfiguration proxy) {
         return new OkHttpClient.Builder()
                 .proxy(Optional.ofNullable(proxy)
                         .map(config -> new Proxy(HTTP, new InetSocketAddress(config.getHost(), config.getPort())))
@@ -86,7 +87,7 @@ public final class OkHttpUtils {
      * @return The body content or {@code null} if not present
      * @throws IOException If an error occurs when reading the body content
      */
-    public static String getBody(Response response) throws IOException {
+    public static @Nullable String getBody(Response response) throws IOException {
         try (ResponseBody body = response.body()) {
             return body != null ? body.string() : null;
         }
@@ -99,7 +100,7 @@ public final class OkHttpUtils {
      * @param response The HTTP response
      * @return The body content or the exception message when reading it
      */
-    public static String getBodyOrError(Response response) {
+    public static @Nullable String getBodyOrError(Response response) {
         try (ResponseBody body = response.body()) {
             return body != null ? body.string() : null;
         } catch (Exception e) {

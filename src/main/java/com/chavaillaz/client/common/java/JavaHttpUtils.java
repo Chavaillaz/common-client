@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jspecify.annotations.Nullable;
 
 import com.chavaillaz.client.common.utility.ProxyConfiguration;
 import com.chavaillaz.client.common.utility.Utils;
@@ -37,7 +38,7 @@ public final class JavaHttpUtils {
      * @param proxy The proxy configuration
      * @return The corresponding client
      */
-    public static HttpClient.Builder defaultHttpClientBuilder(ProxyConfiguration proxy) {
+    public static HttpClient.Builder defaultHttpClientBuilder(@Nullable ProxyConfiguration proxy) {
         return HttpClient.newBuilder()
                 .cookieHandler(new CookieManager())
                 .proxy(Optional.ofNullable(proxy)

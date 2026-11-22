@@ -23,6 +23,7 @@ import org.apache.hc.client5.http.impl.cookie.BasicClientCookie;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.protocol.HttpContext;
+import org.jspecify.annotations.Nullable;
 
 import com.chavaillaz.client.common.AbstractHttpClient;
 import com.chavaillaz.client.common.security.Authentication;
@@ -70,7 +71,7 @@ public abstract class AbstractApacheHttpClient extends AbstractHttpClient implem
      * @param <T>            The domain object type
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
-    protected <T> CompletableFuture<T> sendAsync(SimpleRequestBuilder requestBuilder, Class<T> returnType) {
+    protected <T> CompletableFuture<@Nullable T> sendAsync(SimpleRequestBuilder requestBuilder, Class<T> returnType) {
         return sendAsync(requestBuilder, objectMapper.constructType(returnType));
     }
 
@@ -82,7 +83,7 @@ public abstract class AbstractApacheHttpClient extends AbstractHttpClient implem
      * @param <T>            The domain object type
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
-    protected <T> CompletableFuture<T> sendAsync(SimpleRequestBuilder requestBuilder, JavaType returnType) {
+    protected <T> CompletableFuture<@Nullable T> sendAsync(SimpleRequestBuilder requestBuilder, JavaType returnType) {
         return sendAsyncBase(requestBuilder)
                 .thenApply(SimpleHttpResponse::getBodyText)
                 .thenApply(body -> deserialize(body, returnType));
@@ -123,7 +124,7 @@ public abstract class AbstractApacheHttpClient extends AbstractHttpClient implem
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
     @SneakyThrows
-    protected <T> CompletableFuture<T> sendAsync(SimpleRequestBuilder requestBuilder, MultipartEntityBuilder multipartBuilder, Class<T> returnType) {
+    protected <T> CompletableFuture<@Nullable T> sendAsync(SimpleRequestBuilder requestBuilder, MultipartEntityBuilder multipartBuilder, Class<T> returnType) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         String boundary = RandomStringUtils.insecure().nextAlphanumeric(16);
         multipartBuilder.setBoundary(boundary);

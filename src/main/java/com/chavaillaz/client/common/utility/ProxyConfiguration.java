@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import lombok.Data;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Proxy configuration to be used in order to access the desired services.
@@ -19,7 +20,7 @@ public class ProxyConfiguration {
 
     private final String host;
     private final Integer port;
-    private final String scheme;
+    private final @Nullable String scheme;
 
     /**
      * Creates a new proxy configuration.
@@ -28,7 +29,7 @@ public class ProxyConfiguration {
      * @param host   The proxy host
      * @param port   The proxy port
      */
-    protected ProxyConfiguration(String scheme, String host, Integer port) {
+    protected ProxyConfiguration(@Nullable String scheme, String host, Integer port) {
         this.scheme = scheme;
         this.host = host;
         this.port = port;
@@ -42,7 +43,7 @@ public class ProxyConfiguration {
      * @param port The proxy port
      * @return The corresponding proxy configuration or {@code null}
      */
-    public static ProxyConfiguration from(String host, Integer port) {
+    public static @Nullable ProxyConfiguration from(@Nullable String host, @Nullable Integer port) {
         return from(null, host, port);
     }
 
@@ -55,7 +56,7 @@ public class ProxyConfiguration {
      * @param port   The proxy port
      * @return The corresponding proxy configuration or {@code null}
      */
-    public static ProxyConfiguration from(String scheme, String host, Integer port) {
+    public static @Nullable ProxyConfiguration from(@Nullable String scheme, @Nullable String host, @Nullable Integer port) {
         if (isNotBlank(host) && nonNull(port)) {
             return new ProxyConfiguration(scheme, host, port);
         }
@@ -69,7 +70,7 @@ public class ProxyConfiguration {
      * @param path The proxy URL
      * @return The corresponding proxy configuration or {@code null}
      */
-    public static ProxyConfiguration from(String path) {
+    public static @Nullable ProxyConfiguration from(String path) {
         Matcher matcher = PROXY_PATTERN.matcher(path);
         if (matcher.find()) {
             return new ProxyConfiguration(matcher.group(1), matcher.group(2), toInt(matcher.group(3)));
