@@ -63,7 +63,7 @@ public final class JavaHttpUtils {
      * @param data     The data to store in the request
      * @param boundary The boundary to separate them
      * @param charset  The charset to use
-     * @return The corresponding body publisher
+     * @return The corresponding body publisher, of the length of the content
      * @throws IOException if an error occurs when reading files if given in the data parameter
      */
     public static BodyPublisher mimeMultipartData(List<Pair<Object, Object>> data, String boundary, Charset charset) throws IOException {
@@ -86,7 +86,9 @@ public final class JavaHttpUtils {
         }
 
         byteArrays.add(("--" + boundary + "--").getBytes(charset));
-        return BodyPublishers.ofByteArrays(byteArrays);
+        // The length lets the request declare it, rather than sending the body in chunks
+        long length = byteArrays.stream().mapToLong(bytes -> bytes.length).sum();
+        return BodyPublishers.fromPublisher(BodyPublishers.ofByteArrays(byteArrays), length);
     }
 
     /**
