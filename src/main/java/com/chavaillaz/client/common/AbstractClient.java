@@ -25,7 +25,7 @@ public abstract class AbstractClient<C, I> implements Client<I> {
      */
     protected AbstractClient(String baseUrl) {
         this.baseUrl = baseUrl;
-        withAnonymousAuthentication();
+        this.authentication = new AnonymousAuthentication();
     }
 
     /**
