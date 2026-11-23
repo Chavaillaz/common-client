@@ -130,6 +130,17 @@ public abstract class AbstractUserApiTest {
     }
 
     @Test
+    @DisplayName("Gets an empty stream when the service answers without content")
+    void testGetNoAvatar(WireMockRuntimeInfo wiremock) throws IOException {
+        stubFor(get(URL_AVATAR).willReturn(noContent()));
+
+        try (UserApi api = newUserApi(wiremock.getHttpBaseUrl(), new AnonymousAuthentication(), null);
+             InputStream avatar = api.getAvatar().join()) {
+            assertThat(avatar).isEmpty();
+        }
+    }
+
+    @Test
     @DisplayName("Completes with nothing when the service answers without content")
     void testDeleteUser(WireMockRuntimeInfo wiremock) throws IOException {
         stubFor(delete(URL_USER).willReturn(noContent()));

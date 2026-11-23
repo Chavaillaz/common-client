@@ -3,6 +3,7 @@ package com.chavaillaz.client.common.vertx;
 import static com.chavaillaz.client.common.utility.Utils.getCookieHeader;
 
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.databind.JavaType;
@@ -92,11 +93,12 @@ public abstract class AbstractVertxHttpClient extends AbstractHttpClient impleme
      * Handles the request sent and returns an input stream.
      *
      * @param future The future response
-     * @return A {@link CompletableFuture} with the input stream
+     * @return A {@link CompletableFuture} with the input stream, empty for a response without body
      */
     protected CompletableFuture<InputStream> handleAsync(Future<HttpResponse<Buffer>> future) {
         return handleAsyncBase(future)
-                .thenApply(HttpResponse::body)
+                // A response without content, such as a 204, has no body at all rather than an empty one
+                .thenApply(response -> Objects.requireNonNullElseGet(response.body(), Buffer::buffer))
                 .thenApply(VertxInputStream::new);
     }
 

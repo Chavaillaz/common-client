@@ -93,12 +93,15 @@ public abstract class AbstractApacheHttpClient extends AbstractHttpClient implem
      * Sends a request and returns an input stream.
      *
      * @param requestBuilder The request builder
-     * @return A {@link CompletableFuture} with the input stream
+     * @return A {@link CompletableFuture} with the input stream, empty for a response without body
      */
     protected CompletableFuture<InputStream> sendAsync(SimpleRequestBuilder requestBuilder) {
         return sendAsyncBase(requestBuilder)
-                .thenApply(SimpleHttpResponse::getBodyBytes)
-                .thenApply(ByteArrayInputStream::new);
+                .thenApply(response -> {
+                    // A response without content, such as a 204, has no body at all rather than an empty one
+                    byte[] body = response.getBodyBytes();
+                    return body != null ? new ByteArrayInputStream(body) : InputStream.nullInputStream();
+                });
     }
 
     /**
